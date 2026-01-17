@@ -45,13 +45,8 @@ public class GameController extends JPanel {
         MyKeyListener listener = new MyKeyListener();
         addKeyListener(listener);
         setFocusable(true);
-        obstacles.add(new Platform(500,680, 200, 50));
-        obstacles.add(new Platform(900,580, 200, 50));
-        obstacles.add(new Block(1000,200, 50));
-        obstacles.add(new Spikes(1300, 810, 50));
-        coins.add(new Coin(300,300));
-        coins.add(new Coin(500,300));
-        coins.add(new Coin(600,500));
+        levelOne();
+
         loadBGImages();
     }
     public void loadBGImages(){
@@ -76,6 +71,9 @@ public class GameController extends JPanel {
         for (int i = 0; i < coins.size(); i++){
             coins.get(i).draw(g);
         }
+        for (int i = 0; i < enemies.size(); i++){
+            enemies.get(i).draw(g);
+        }
 
         // create a delay
         try {
@@ -95,7 +93,9 @@ public class GameController extends JPanel {
                 System.out.println("Obstacle Collision");
             }
         }
+
         updateCoins();
+
     }
     public void updateCoins(){
         for (int i = 0; i < coins.size(); i++){
@@ -153,6 +153,17 @@ public class GameController extends JPanel {
     }
     public void gameOver(){
 
+    }
+    public void levelOne(){
+        obstacles.add(new Platform(500,680, 200, 50));
+        obstacles.add(new Platform(900,580, 200, 50));
+        obstacles.add(new Block(1000,200, 50));
+        obstacles.add(new Spikes(1300, 810, 50));
+        coins.add(new Coin(300,300));
+        coins.add(new Coin(500,300));
+        coins.add(new Coin(600,500));
+        enemies.add(new Goomba(1450, 750));
+        enemies.add(new Koopa(1650, 750));
     }
     public void nextLevel(){
 
