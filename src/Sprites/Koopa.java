@@ -11,7 +11,6 @@ public class Koopa extends Enemy{
     private int intDirection = 1;
     private double dblSpeed = 0.5, dblShellSpeed = 2, dblShellDirection;
     private long stompTimer;
-
     private boolean blnInShell, blnIsMoving;
 
     public Koopa(int x, int y){
@@ -73,7 +72,9 @@ public class Koopa extends Enemy{
         }
     }
     @Override
-    public void onHitWithFireball() {
-
+    public void onHitWithFireball(GameController gmc, int index, Player player) {
+        if (!blnInShell){
+            gmc.removeEnemy(index);
+        }
     }
 }

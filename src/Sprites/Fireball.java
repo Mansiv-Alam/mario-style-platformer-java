@@ -1,4 +1,82 @@
 package Sprites;
 
+import Game.GameController;
+
+import java.awt.*;
+
 public class Fireball {
+
+    private double dblX, dblY, dblPrevY;
+    private final double GRAVITY = 0.1;
+    private final double BOUNCE = -4;
+    private double velX, velY = 0;
+    private int intSize = 20, intBounceCount = 0;
+    private boolean blnActive = true;
+
+    public Fireball(double dblStartX, double dblStartY, int intDirection){
+        this.dblX = dblStartX;
+        this.dblY = dblStartY;
+        this.velX = 2 * intDirection;
+    }
+    // Accessor Methods
+    public double getY() {
+        return this.dblY;
+    }
+    public double getX() {
+        return this.dblX;
+    }
+    public double getPrevY(){
+        return this.dblPrevY;
+    }
+    public int getHeight() {
+        return this.intSize;
+    }
+    public int getSize(){
+        return  this.intSize;
+    }
+    public boolean isActive() {
+        return this.blnActive;
+    }
+    public void setVelY(double dblNewVelY){
+        this.velY = dblNewVelY;
+    }
+    public void setPositionY(double dblNewY){
+        this.dblY = dblNewY;
+    }
+
+    public void update(){
+        dblPrevY = dblY;
+
+        velY += GRAVITY;
+        dblX += velX;
+        dblY += velY;
+
+        // bounce on ground
+        if (dblY + intSize >= 863) {
+            dblY = 863 - intSize;
+            velY = BOUNCE;
+            incrementBounceCount();
+
+            if (intBounceCount >= 3) {
+                destroyFireball();
+            }
+        }
+    }
+    public void incrementBounceCount(){
+        intBounceCount++;
+    }
+    public void draw(Graphics g) {
+        g.setColor(Color.ORANGE);
+        g.fillOval((int)dblX, (int)dblY, intSize, intSize);
+    }
+    public Rectangle getBounds() {
+        return new Rectangle((int)dblX, (int)dblY, intSize, intSize);
+    }
+    public void destroyFireball() {
+        blnActive = false;
+    }
+
+    public int getBounce() {
+        return this.intBounceCount;
+    }
 }

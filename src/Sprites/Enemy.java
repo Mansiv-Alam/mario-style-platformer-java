@@ -35,7 +35,7 @@ public abstract class Enemy {
     public abstract void collidesWith(GameController gmc, Player player);
     public abstract void move();
     public abstract void onStomp(GameController gmc, int index, Player player);
-    public abstract void onHitWithFireball();
+    public abstract void onHitWithFireball(GameController gmc, int index, Player player);
 
     // Makes a rectangle object for the built-in collision checks
     public Rectangle getBounds() {

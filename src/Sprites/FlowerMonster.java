@@ -63,7 +63,7 @@ public class FlowerMonster extends Enemy{
         }
     }
     @Override
-    public void onHitWithFireball() {
+    public void onHitWithFireball(GameController gmc, int index, Player player) {
 
     }
 }

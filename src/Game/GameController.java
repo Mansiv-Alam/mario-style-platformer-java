@@ -30,6 +30,8 @@ public class GameController extends JPanel {
             if (e.getKeyCode() == 'A') {blnMovingLeft = true;}
             if (e.getKeyCode() == 'D') { blnMovingRight = true;}
             if (e.getKeyCode() == ' ') {player.jump();}
+            if (e.getKeyCode() == 'F') {fireballs.add(new Fireball(player.getX() + player.getWidth() / 2.0,
+                    player.getY() + player.getHeight() / 2.0, player.getDirection()));}
         }
 
         @Override
@@ -74,6 +76,9 @@ public class GameController extends JPanel {
         for (int i = 0; i < enemies.size(); i++){
             enemies.get(i).draw(g);
         }
+        for (int i = 0; i < fireballs.size(); i++){
+            fireballs.get(i).draw(g);
+        }
 
         // create a delay
         try {
@@ -86,10 +91,10 @@ public class GameController extends JPanel {
     public void update(){
         player.updatePlayer(blnMovingRight, blnMovingLeft);
 
-        obstacleCollision();
+        updateFireballs();
         updateEnemies();
+        obstacleCollision();
         updateCoins();
-
     }
     public void updateCoins(){
         for (int i = 0; i < coins.size(); i++){
@@ -100,6 +105,50 @@ public class GameController extends JPanel {
             }
         }
     }
+    public void updateFireballs(){
+        for (int i = 0; i < fireballs.size(); i++){
+            Fireball f = fireballs.get(i);
+
+            f.update();
+
+            System.out.println(f.getBounce());
+            boolean blnRemoved = false; // stops processing the code after the fireball is removed
+            for (int j = 0; j < enemies.size(); j++){
+                if (f.getBounds().intersects(enemies.get(j).getBounds())){
+                    enemies.get(j).onHitWithFireball(this, j, player);
+                    fireballs.remove(i);
+                    i--;
+                    blnRemoved = true;
+                    break; // stop checking enemies
+                }
+            }
+            if (blnRemoved){continue;}
+
+            for (int j = 0; j < obstacles.size(); j++){
+                if (f.getBounds().intersects(obstacles.get(j).getBounds())){
+                    if ((int)f.getPrevY() + f.getHeight() <= obstacles.get(j).getY() + 5) {
+                        f.setPositionY(obstacles.get(j).getY() - f.getHeight());
+                        f.setVelY(-4); // bounce
+                        f.incrementBounceCount();
+                    }
+                    else if (f.getX() + f.getSize() > obstacles.get(j).getX() && f.getX() < obstacles.get(j).getX() + obstacles.get(j).getWidth()){
+                        fireballs.remove(i); // hit side or bottom
+                        i--;
+                        blnRemoved = true;
+                    }
+                    break; // stop checking obstacles
+                }
+            }
+            if (blnRemoved){continue;}
+
+            // remove fireball if it bounced 3 times
+            if (!f.isActive()){
+                fireballs.remove(i);
+                i--;
+            }
+        }
+    }
+
     public void updateEnemies(){
         for (int i = 0; i < enemies.size(); i++){
             // Checks for collision
@@ -183,6 +232,7 @@ public class GameController extends JPanel {
         coins.add(new Coin(600,500));
         enemies.add(new Goomba(1450, 750));
         enemies.add(new Koopa(1650, 750));
+        obstacles.add(new Pipe(1800, 750));
         enemies.add(new FlowerMonster(1800, 750));
     }
     public void nextLevel(){

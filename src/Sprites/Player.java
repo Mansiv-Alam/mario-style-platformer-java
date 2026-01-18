@@ -12,6 +12,7 @@ public class Player {
     // Physics Variable
     private double dblVelocityY = 0, dblVelocityX;
     private double dblJumpPower = -3.5, dblGravityUp = 0.02, dblGravityDown = 0.035, dblMaxFallSpeed = 6,dblSpeed = 0.8;
+    private int intDirection = 1;
     // Health
     private int intLives = 2, intPlayerState;
     private boolean blnInvincible;
@@ -65,6 +66,9 @@ public class Player {
     }
     public int getWidth(){
         return this.intWidth;
+    }
+    public int getDirection(){
+        return this.intDirection;
     }
     public void setPlayerState(int newPlayerState){
         this.intPlayerState = newPlayerState;
@@ -146,10 +150,12 @@ public class Player {
         // Horizontal Movement
         if (blnIsMovingRight){
             dblVelocityX = dblSpeed;
+            intDirection = 1;
             imageDisplayed = playerImages[0];
         }
         else if (blnIsMovingLeft){
             dblVelocityX = -dblSpeed;
+            intDirection = -1;
             imageDisplayed = playerImages[1];
         }
         else {

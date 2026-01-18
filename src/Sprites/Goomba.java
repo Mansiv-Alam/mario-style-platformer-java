@@ -46,7 +46,7 @@ public class Goomba extends Enemy{
         player.bounce();
     }
     @Override
-    public void onHitWithFireball() {
-
+    public void onHitWithFireball(GameController gmc, int index, Player player) {
+        gmc.removeEnemy(index);
     }
 }
