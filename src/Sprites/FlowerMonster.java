@@ -24,7 +24,7 @@ public class FlowerMonster extends Enemy{
 
     }
     @Override
-    public void onStomp(){
+    public void onStomp(GameController gmc, int index){
 
     }
     @Override

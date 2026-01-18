@@ -9,10 +9,14 @@ public class Player {
     // For Collisions
     private double dblPrevX, dblPrevY;
     private int intWidth = 116, intHeight = 146;
-    // Jump Variable
+    // Physics Variable
     private double dblVelocityY = 0, dblVelocityX;
     private double dblJumpPower = -3.5, dblGravityUp = 0.02, dblGravityDown = 0.035, dblMaxFallSpeed = 6,dblSpeed = 0.8;
-    private int intLives = 2, intPlayerState;
+    // Health
+    private int intLives = 2, intPlayerState, intInvincibilityFrames;
+    private boolean blnInvincible;
+    private long InvincibleTime;
+
     public boolean blnIsJumping, blnIsFalling;
     // Animation Variables
     private int intAnimationFrame;
@@ -29,7 +33,6 @@ public class Player {
         loadImages();
     }
     public void loadImages(){
-
 
         // Names of the files
         String[] fileNames = {"Mario_Right.png", "Mario_Left.png"};
@@ -86,13 +89,31 @@ public class Player {
         }
     }
     public void takeDamage(){
+        if(blnInvincible) return;
+
+        blnInvincible = true;
+        intInvincibilityFrames = 60;
+        // knockback
+        dblPositionX -= 50;                 // push back horizontally
+        dblPositionY -= 10;                 // optional small hop
+        dblVelocityY = -1.5;
         intLives--;
+        InvincibleTime = System.currentTimeMillis();
     }
     public void stopHorizontalVel(){
         this.dblVelocityX = 0;
     }
     public void stopVerticalVel(){
         this.dblVelocityY = 0;
+    }
+    public void updatePlayer(boolean blnIsMovingRight, boolean blnIsMovingLeft){
+        updatePosition(blnIsMovingRight, blnIsMovingLeft);
+        if (blnInvincible) {
+            long elaspedTime = System.currentTimeMillis() - InvincibleTime;
+            if (elaspedTime > 1000){
+                blnInvincible = false; // invincibility ends after 1 second
+            }
+        }
     }
 
     public void updatePosition(boolean blnIsMovingRight, boolean blnIsMovingLeft){

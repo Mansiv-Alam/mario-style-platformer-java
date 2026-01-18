@@ -6,8 +6,16 @@ import java.awt.*;
 
 public class Goomba extends Enemy{
 
+    private double dblStartX;
+    private int intRange = 100;
+    private int intDirection = 1;
+    private double dblSpeed = 0.5;
+
     public Goomba(int x, int y){
         super(x,y);
+        this.intHeight = 100;
+        this.intWidth = 50;
+        this.dblStartX = x;
     }
 
     @Override
@@ -21,11 +29,20 @@ public class Goomba extends Enemy{
     }
     @Override
     public void move(){
+        dblX += dblSpeed * intDirection;
+
+        // Turns around at the end of the range
+        if (dblX >= dblStartX + intRange){
+            intDirection = -1;
+        }
+        else if (dblX <= dblStartX - intRange){
+            intDirection = 1;
+        }
 
     }
     @Override
-    public void onStomp(){
-
+    public void onStomp(GameController gmc, int index){
+        gmc.removeEnemy(index);
     }
     @Override
     public void onHitWithFireball() {

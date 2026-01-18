@@ -84,7 +84,7 @@ public class GameController extends JPanel {
         repaint();
     }
     public void update(){
-        player.updatePosition(blnMovingRight, blnMovingLeft);
+        player.updatePlayer(blnMovingRight, blnMovingLeft);
 
         // Collision check
         for (int i = 0; i < obstacles.size(); i++){
@@ -94,6 +94,7 @@ public class GameController extends JPanel {
             }
         }
 
+        updateEnemies();
         updateCoins();
 
     }
@@ -106,6 +107,23 @@ public class GameController extends JPanel {
             }
         }
     }
+    public void updateEnemies(){
+        for (int i = 0; i < enemies.size(); i++){
+            // Checks for collision
+            if (player.getPlayerBounds().intersects(enemies.get(i).getBounds())){
+                if (player.getVelocityY() > 0 && (int)player.getPrevY() + player.getHeight() <= enemies.get(i).getBounds().y) {
+                    enemies.get(i).onStomp(this, i); // kills enemy
+                    //player.bounce();             // small upward bounce
+                }
+                else {
+                    player.takeDamage();
+                }
+            }
+
+            enemies.get(i).move();
+        }
+    }
+
 
     private void resolveCollision(Obstacle obstacle) {
         Rectangle obstacleRect = obstacle.getBounds();
@@ -141,6 +159,9 @@ public class GameController extends JPanel {
     public void addCoin(Coin coin){
         coins.add(coin);
     }
+    public void removeEnemy(int index){
+        enemies.remove(index);
+    }
 
     public void startGame(){
 
@@ -155,15 +176,16 @@ public class GameController extends JPanel {
 
     }
     public void levelOne(){
-        obstacles.add(new Platform(500,680, 200, 50));
-        obstacles.add(new Platform(900,580, 200, 50));
-        obstacles.add(new Block(1000,200, 50));
-        obstacles.add(new Spikes(1300, 810, 50));
+        obstacles.add(new Platform(300,680, 200, 50));
+        obstacles.add(new Platform(700,580, 200, 50));
+        obstacles.add(new Block(800,200, 50));
+        obstacles.add(new Spikes(1100, 810, 50));
         coins.add(new Coin(300,300));
         coins.add(new Coin(500,300));
         coins.add(new Coin(600,500));
         enemies.add(new Goomba(1450, 750));
         enemies.add(new Koopa(1650, 750));
+        enemies.add(new FlowerMonster(1800, 750));
     }
     public void nextLevel(){
 
