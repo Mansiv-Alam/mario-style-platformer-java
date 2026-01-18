@@ -13,7 +13,7 @@ public class Player {
     private double dblVelocityY = 0, dblVelocityX;
     private double dblJumpPower = -3.5, dblGravityUp = 0.02, dblGravityDown = 0.035, dblMaxFallSpeed = 6,dblSpeed = 0.8;
     // Health
-    private int intLives = 2, intPlayerState, intInvincibilityFrames;
+    private int intLives = 2, intPlayerState;
     private boolean blnInvincible;
     private long InvincibleTime;
 
@@ -69,6 +69,9 @@ public class Player {
     public void setPlayerState(int newPlayerState){
         this.intPlayerState = newPlayerState;
     }
+    public double getVelocityX(){
+        return this.dblVelocityX;
+    }
     public double getVelocityY(){
         return this.dblVelocityY;
     }
@@ -88,39 +91,13 @@ public class Player {
             blnIsJumping = true;
         }
     }
-    public void takeDamage(){
-        if(blnInvincible) return;
-
-        blnInvincible = true;
-        intInvincibilityFrames = 60;
-        // knockback
-        dblPositionX -= 50;                 // push back horizontally
-        dblPositionY -= 10;                 // optional small hop
-        dblVelocityY = -1.5;
-        intLives--;
-        InvincibleTime = System.currentTimeMillis();
+    public void bounce() {
+        // small upward velocity
+        this.dblVelocityY = -2.0;
+        blnIsJumping = true;
+        blnIsFalling = false;
     }
-    public void stopHorizontalVel(){
-        this.dblVelocityX = 0;
-    }
-    public void stopVerticalVel(){
-        this.dblVelocityY = 0;
-    }
-    public void updatePlayer(boolean blnIsMovingRight, boolean blnIsMovingLeft){
-        updatePosition(blnIsMovingRight, blnIsMovingLeft);
-        if (blnInvincible) {
-            long elaspedTime = System.currentTimeMillis() - InvincibleTime;
-            if (elaspedTime > 1000){
-                blnInvincible = false; // invincibility ends after 1 second
-            }
-        }
-    }
-
-    public void updatePosition(boolean blnIsMovingRight, boolean blnIsMovingLeft){
-        // Saves previous position
-        dblPrevX = this.dblPositionX;
-        dblPrevY = this.dblPositionY;
-
+    public void applyGravity(){
         // Apply different gravity for a floaty rise and a quick fall
         if (dblVelocityY < 0) {
             dblVelocityY += dblGravityUp;
@@ -132,6 +109,40 @@ public class Player {
         if (dblVelocityY > dblMaxFallSpeed){
             dblVelocityY = dblMaxFallSpeed;
         }
+    }
+    public void takeDamage(){
+        if(blnInvincible) return;
+
+        blnInvincible = true;
+        InvincibleTime = System.currentTimeMillis();
+        // knock back
+        dblPositionX -= 50; // push back horizontally
+        dblPositionY -= 10;
+        dblVelocityY = -2.2; // optional small hop
+        intLives--;
+    }
+    public void stopHorizontalVel(){
+        this.dblVelocityX = 0;
+    }
+    public void stopVerticalVel(){
+        this.dblVelocityY = 0;
+    }
+    public void updatePlayer(boolean blnIsMovingRight, boolean blnIsMovingLeft){
+
+        updatePosition(blnIsMovingRight, blnIsMovingLeft);
+        if (blnInvincible) {
+            long elapsedTime = System.currentTimeMillis() - InvincibleTime;
+            if (elapsedTime >= 1000){
+                blnInvincible = false; // invincibility ends after 1 second
+            }
+        }
+    }
+
+    public void updatePosition(boolean blnIsMovingRight, boolean blnIsMovingLeft){
+        // Saves previous position
+        dblPrevX = this.dblPositionX;
+        dblPrevY = this.dblPositionY;
+
         // Horizontal Movement
         if (blnIsMovingRight){
             dblVelocityX = dblSpeed;
@@ -145,6 +156,8 @@ public class Player {
             stopHorizontalVel();
         }
 
+        applyGravity();
+
         dblPositionX += dblVelocityX;
         dblPositionY += dblVelocityY;
 
@@ -154,7 +167,8 @@ public class Player {
             dblVelocityY = 0;
             blnIsJumping = false;
             blnIsFalling = false;
-        } else {
+        }
+        else {
             if ((int)dblVelocityY > 0) {blnIsFalling = true;}
         }
     }
@@ -163,6 +177,7 @@ public class Player {
     }
     // Collisions
     public void onPlatform(){
+
         blnIsFalling = false;
         blnIsJumping = false;
     }

@@ -9,7 +9,6 @@ public abstract class Enemy {
     protected double dblY;
     protected int intWidth = 40;
     protected int intHeight = 100;
-    protected boolean blnAlive;
 
     public Enemy(int x, int y){
         this.dblX = x;
@@ -35,7 +34,7 @@ public abstract class Enemy {
     public abstract void draw(Graphics g);
     public abstract void collidesWith(GameController gmc, Player player);
     public abstract void move();
-    public abstract void onStomp(GameController gmc, int index);
+    public abstract void onStomp(GameController gmc, int index, Player player);
     public abstract void onHitWithFireball();
 
     // Makes a rectangle object for the built-in collision checks

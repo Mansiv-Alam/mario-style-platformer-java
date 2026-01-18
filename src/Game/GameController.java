@@ -86,14 +86,7 @@ public class GameController extends JPanel {
     public void update(){
         player.updatePlayer(blnMovingRight, blnMovingLeft);
 
-        // Collision check
-        for (int i = 0; i < obstacles.size(); i++){
-            if (player.getPlayerBounds().intersects(obstacles.get(i).getBounds())){
-                resolveCollision(obstacles.get(i));
-                System.out.println("Obstacle Collision");
-            }
-        }
-
+        obstacleCollision();
         updateEnemies();
         updateCoins();
 
@@ -112,48 +105,53 @@ public class GameController extends JPanel {
             // Checks for collision
             if (player.getPlayerBounds().intersects(enemies.get(i).getBounds())){
                 if (player.getVelocityY() > 0 && (int)player.getPrevY() + player.getHeight() <= enemies.get(i).getBounds().y) {
-                    enemies.get(i).onStomp(this, i); // kills enemy
-                    //player.bounce();             // small upward bounce
+                    enemies.get(i).onStomp(this, i, player);
                 }
                 else {
-                    player.takeDamage();
+                    enemies.get(i).collidesWith(this, player);
                 }
             }
-
             enemies.get(i).move();
         }
     }
 
+    private void obstacleCollision() {
+        // Collision check
+        for (int i = 0; i < obstacles.size(); i++){
+            if (player.getPlayerBounds().intersects(obstacles.get(i).getBounds())){
+                Rectangle obstacleRect = obstacles.get(i).getBounds();
+                Rectangle playerRect = player.getPlayerBounds();
 
-    private void resolveCollision(Obstacle obstacle) {
-        Rectangle obstacleRect = obstacle.getBounds();
-        Rectangle playerRect = player.getPlayerBounds();
-        //System.out.println(player.blnIsFalling + ", " + player.blnIsJumping + ", " + player.getVelocityY());
+                //System.out.println(player.blnIsFalling + ", " + player.blnIsJumping + ", " + player.getVelocityY());
 
-        // Figure out where the collision is happening
-        // Land on top of the obstacle
-        if ((int)player.getPrevY() + playerRect.height <= obstacleRect.y && player.getVelocityY() >= 0 ) {
-            //System.out.println(player.getPrevY() + ", " + playerRect.height + ", " + obstacleRect.y);
-            player.setPlayerPosition(player.getX(), obstacleRect.y - player.getHeight());
-            player.stopVerticalVel();
-            obstacle.collidesWith(this, player);
-        }
-        // Hit the bottom of the obstacle
-        else if ((int)player.getPrevY() >= obstacleRect.y + obstacleRect.height) {
-            player.setPlayerPosition(player.getX(), obstacleRect.y + obstacleRect.height);
-            player.stopVerticalVel();
-            obstacle.collidesWith(this, player);
-        }
-        // Hit obstacle from the left
-        else if ((int)player.getPrevX() + playerRect.width <= obstacleRect.x) {
-            player.setPlayerPosition(obstacleRect.x - player.getWidth(), player.getY());
-            player.stopHorizontalVel();
-            obstacle.collidesWith(this, player);
-        }
-        // Hit obstacle from the right
-        else if ((int)player.getPrevX() >= obstacleRect.x + obstacleRect.width) {
-            player.setPlayerPosition(obstacleRect.x + obstacleRect.width, player.getY());
-            player.stopHorizontalVel();
+                // Figure out where the collision is happening
+                // Land on top of the obstacle
+                if ((int)player.getPrevY() + playerRect.height <= obstacleRect.y && player.getVelocityY() >= 0 ) {
+                    //System.out.println(player.getPrevY() + ", " + playerRect.height + ", " + obstacleRect.y);
+                    player.setPlayerPosition(player.getX(), obstacleRect.y - player.getHeight());
+                    player.stopVerticalVel();
+                    obstacles.get(i).collidesWith(this, player);
+                    break;
+                }
+                // Hit the bottom of the obstacle
+                else if ((int)player.getPrevY() >= obstacleRect.y + obstacleRect.height) {
+                    player.setPlayerPosition(player.getX(), obstacleRect.y + obstacleRect.height);
+                    player.stopVerticalVel();
+                    obstacles.get(i).collidesWith(this, player);
+                }
+                // Hit obstacle from the left
+                else if ((int)player.getPrevX() + playerRect.width <= obstacleRect.x) {
+                    player.setPlayerPosition(obstacleRect.x - player.getWidth(), player.getY());
+                    player.stopHorizontalVel();
+                    obstacles.get(i).collidesWith(this, player);
+                }
+                // Hit obstacle from the right
+                else if ((int)player.getPrevX() >= obstacleRect.x + obstacleRect.width) {
+                    player.setPlayerPosition(obstacleRect.x + obstacleRect.width, player.getY());
+                    player.stopHorizontalVel();
+                }
+                System.out.println("Obstacle Collision");
+            }
         }
     }
     public void addCoin(Coin coin){

@@ -25,7 +25,7 @@ public class Goomba extends Enemy{
     }
     @Override
     public void collidesWith(GameController gmc, Player player){
-        player.onPlatform();
+        player.takeDamage();
     }
     @Override
     public void move(){
@@ -41,8 +41,9 @@ public class Goomba extends Enemy{
 
     }
     @Override
-    public void onStomp(GameController gmc, int index){
+    public void onStomp(GameController gmc, int index, Player player){
         gmc.removeEnemy(index);
+        player.bounce();
     }
     @Override
     public void onHitWithFireball() {

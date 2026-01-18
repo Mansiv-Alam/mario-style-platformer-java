@@ -13,8 +13,7 @@ public class Spikes extends Obstacle{
         g.fillRect(intX, intY, intWidth, intHeight);
     }
     public void collidesWith(GameController gmc, Player player){
-        player.onPlatform();
-        player.jump();
+        player.bounce();
         player.takeDamage();
     }
 }

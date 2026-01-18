@@ -8,8 +8,9 @@ public class Koopa extends Enemy{
 
     private double dblStartX;
     private int intRange = 100;
-    private int intDirection = 1,dblShellDirection;
-    private double dblSpeed = 0.5, dblShellSpeed = 2;
+    private int intDirection = 1;
+    private double dblSpeed = 0.5, dblShellSpeed = 2, dblShellDirection;
+    private long stompTimer;
 
     private boolean blnInShell, blnIsMoving;
 
@@ -30,7 +31,18 @@ public class Koopa extends Enemy{
     }
     @Override
     public void collidesWith(GameController gmc, Player player){
-        player.onPlatform();
+        if (!blnInShell){
+            player.takeDamage();
+        }
+        else if (System.currentTimeMillis() - stompTimer > 1000){
+            blnIsMoving = true;
+            if (player.getVelocityX() > 0){
+                dblShellDirection = 1;
+            }
+            else {
+                dblShellDirection = -1;
+            }
+        }
     }
     @Override
     public void move(){
@@ -47,10 +59,13 @@ public class Koopa extends Enemy{
         }
     }
     @Override
-    public void onStomp(GameController gmc, int index){
+    public void onStomp(GameController gmc, int index, Player player){
         if (!blnInShell) {
             blnInShell = true;   // hide in shell
             blnIsMoving = false; // initially stationary
+            stompTimer = System.currentTimeMillis();
+            player.bounce();
+
         } else {
             // shell kicked
             blnIsMoving = true;
