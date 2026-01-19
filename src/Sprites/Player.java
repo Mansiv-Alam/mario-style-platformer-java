@@ -9,7 +9,7 @@ public class Player {
     private double dblPositionY;
     // For Collisions
     private double dblPrevX, dblPrevY;
-    private int intWidth = 99, intHeight = 124;
+    private int intWidth = 80, intHeight = 103;
     // Physics Variable
     private double dblVelocityY = 0, dblVelocityX;
     private double dblJumpPower = -3.5, dblGravityUp = 0.02, dblGravityDown = 0.035, dblMaxFallSpeed = 6,dblSpeed = 0.8;
@@ -21,10 +21,12 @@ public class Player {
 
     public boolean blnIsJumping, blnIsFalling;
     // Animation Variables
-    private int intAnimationFrame;
-    private int intFrameCounter;
-    private int intTotalFrames;
+    private int intAnimationFrame = 0;
+    private int intFrameCounter ;
+    private final int intFrameDelay = 150;
     private Image[] playerImages;
+    private Image[] playerImagesRight = new Image[7];
+    private Image[] playerImagesLeft = new Image[7];
     private Image imageDisplayed;
 
     public Player(double startX, double startY){
@@ -37,16 +39,26 @@ public class Player {
     public void loadImages(){
 
         // Names of the files
-        String[] fileNames = {"Mario_Right.png", "Mario_Left.png"};
+        //String[] fileNames = {"Morio_1.png", "Morio_2.png"};
+        Image img = new ImageIcon("src/Morio_1.png").getImage();
+        // Resizes the image
+        playerImagesRight[0] = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
+        img = new ImageIcon("src/Morio_2.png").getImage();
+        // Resizes the image
+        playerImagesLeft[0] = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
 
-        for (int i = 0; i < fileNames.length; i++) {
+        for (int i = 0; i < 6; i++) {
             // Gets the image from the source files
-            Image img = new ImageIcon("src/" + fileNames[i]).getImage();
+            img = new ImageIcon("src/Morio_" + (i + 5 ) + ".png").getImage();
+            playerImagesRight[i + 1] = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
+
+            img = new ImageIcon("src/Morio_" + (i + 11 ) + ".png").getImage();
             // Resizes the image
-            playerImages[i] = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
+            playerImagesLeft[i + 1] = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
+
         }
         // Defaults to setting to looking to the left
-        imageDisplayed = playerImages[0];
+        imageDisplayed = playerImagesRight[0];
     }
 
     // Accessor methods
@@ -165,12 +177,10 @@ public class Player {
         if (blnIsMovingRight){
             dblVelocityX = dblSpeed;
             intDirection = 1;
-            imageDisplayed = playerImages[0];
         }
         else if (blnIsMovingLeft){
             dblVelocityX = -dblSpeed;
             intDirection = -1;
-            imageDisplayed = playerImages[1];
         }
         else {
             stopHorizontalVel();
@@ -191,9 +201,8 @@ public class Player {
         else {
             if ((int)dblVelocityY > 0) {blnIsFalling = true;}
         }
-    }
-    public void updateAnimation(){
 
+        updateAnimations();
     }
     // Collisions
     public void onPlatform(){
@@ -203,5 +212,28 @@ public class Player {
     }
     public Rectangle getPlayerBounds(){
         return new Rectangle((int)dblPositionX, (int)dblPositionY, intWidth, intHeight);
+    }
+    public void updateAnimations(){
+        if(dblVelocityX == 0){
+            intAnimationFrame = 0;
+            if (intDirection == 1) {
+                imageDisplayed = playerImagesRight[0];
+            }
+            else{
+                imageDisplayed = playerImagesLeft[0];
+            }
+            return;
+        }
+
+        intFrameCounter++;
+        if (intFrameCounter >= intFrameDelay) {
+            intAnimationFrame = (intAnimationFrame + 1) % 6;
+            intFrameCounter = 0;
+        }
+        if (intDirection == 1) {
+            imageDisplayed = playerImagesRight[intAnimationFrame];
+        } else {
+            imageDisplayed = playerImagesLeft[intAnimationFrame];
+        }
     }
 }

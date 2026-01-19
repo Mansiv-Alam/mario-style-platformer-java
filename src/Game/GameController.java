@@ -107,7 +107,6 @@ public class GameController extends JPanel {
             if (player.getPlayerBounds().intersects(coins.get(i).getBounds())){
                 coins.remove(i);
                 intScore++;
-                System.out.println("Obstacle Collision");
             }
         }
     }
@@ -116,7 +115,6 @@ public class GameController extends JPanel {
             Fireball f = fireballs.get(i);
 
             f.update();
-
             System.out.println(f.getBounce());
             boolean blnRemoved = false; // stops processing the code after the fireball is removed
             for (int j = 0; j < enemies.size(); j++){
@@ -202,7 +200,6 @@ public class GameController extends JPanel {
                     player.setPlayerPosition(obstacleRect.x + obstacleRect.width, player.getY());
                     player.stopHorizontalVel();
                 }
-                System.out.println("Obstacle Collision");
             }
         }
     }
