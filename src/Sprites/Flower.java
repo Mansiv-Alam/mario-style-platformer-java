@@ -1,19 +1,24 @@
 package Sprites;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class Flower {
 
     private int intX;
     private int intY;
-    private int intHeight = 60, intWidth = 50;
     private boolean blnActive = false;
     private long displayTime;
+    private Image flowerImage;
 
     public Flower(int x, int y){
         this.intX = x;
         this.intY = y;
         displayTime = System.currentTimeMillis();
+
+        flowerImage = new ImageIcon("src/Fireflower.png").getImage();
+        // Resizes the image
+        //flowerImage = img.getScaledInstance(50, 52, Image.SCALE_SMOOTH);
     }
 
     // Accessor Methods
@@ -23,15 +28,10 @@ public class Flower {
     public int getY(){
         return this.intY;
     }
-    // Collisions
-    public Rectangle getBounds(){
-        return new Rectangle(intX, intY, intWidth, intHeight);
-    }
 
     public void draw(Graphics g){
         if (blnActive){
-            g.setColor(Color.RED);
-            g.fillRect(intX, intY, intWidth, intHeight);
+            g.drawImage(flowerImage, intX, intY, 50, 52, null);
         }
         updateAnimation();
     }

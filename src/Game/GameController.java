@@ -19,7 +19,7 @@ public class GameController extends JPanel {
     private ArrayList<Fireball> fireballs = new ArrayList<>();
     private boolean blnMovingRight, blnMovingLeft;
     boolean blnMouseClicked;
-    private Image[] BgImages = new Image[1];
+    private Image[] BgImages = new Image[2];
 
     public class MyKeyListener implements KeyListener
     {
@@ -57,13 +57,13 @@ public class GameController extends JPanel {
     public void loadBGImages(){
         // Gets the image from the source files
         BgImages[0] = new ImageIcon("src/MorioGround.png").getImage();
+        BgImages[1] = new ImageIcon("src/MorioSky.png").getImage();
+
     }
 
     public void paint(Graphics g) {
         // Background
-        g.setColor(Color.CYAN);
-        g.fillRect(0,0, this.getWidth(), this.getHeight());
-
+        g.drawImage(BgImages[1], 0, 0, null);
         g.drawImage(BgImages[0], 0, 863, null);
 
         update();
@@ -177,12 +177,9 @@ public class GameController extends JPanel {
                 Rectangle obstacleRect = obstacles.get(i).getBounds();
                 Rectangle playerRect = player.getPlayerBounds();
 
-                //System.out.println(player.blnIsFalling + ", " + player.blnIsJumping + ", " + player.getVelocityY());
-
                 // Figure out where the collision is happening
                 // Land on top of the obstacle
                 if ((int)player.getPrevY() + playerRect.height <= obstacleRect.y && player.getVelocityY() >= 0 ) {
-                    //System.out.println(player.getPrevY() + ", " + playerRect.height + ", " + obstacleRect.y);
                     player.setPlayerPosition(player.getX(), obstacleRect.y - player.getHeight());
                     player.stopVerticalVel();
                     obstacles.get(i).collidesWith(this, player);

@@ -12,7 +12,7 @@ public class Coin {
     private final int intFrameDelay = 300;
     private long lastFrameTime;
 
-    Image[] coinImages = new Image[3];
+    Image[] coinImages = new Image[4];
     Image displayImage;
 
     public Coin(int x, int y){
@@ -23,8 +23,10 @@ public class Coin {
     }
 
     public void loadImages(){
-        for (int i = 0; i < 3; i++){
-            Image img = new ImageIcon("src/Coin_" + (i + 1)  +".png").getImage();
+        int[] intAnimationSequence = {1, 2, 1, 3};
+
+        for (int i = 0; i < intAnimationSequence.length; i++){
+            Image img = new ImageIcon("src/Coin_" + intAnimationSequence[i] + ".png").getImage();
             // Resizes the image
             coinImages[i] = img.getScaledInstance(intSize, intSize, Image.SCALE_SMOOTH);
         }
