@@ -50,6 +50,7 @@ public class GameController extends JPanel {
         addKeyListener(listener);
         setFocusable(true);
         levelOne();
+        System.out.println(System.currentTimeMillis());
 
         loadBGImages();
     }
@@ -239,10 +240,10 @@ public class GameController extends JPanel {
         coins.add(new Coin(300,300));
         coins.add(new Coin(500,300));
         coins.add(new Coin(600,500));
-        enemies.add(new Goomba(1450, 750));
+        enemies.add(new Goomba(1450, 813));
         enemies.add(new Koopa(1650, 750));
-        obstacles.add(new Pipe(1800, 750));
-        enemies.add(new FlowerMonster(1800, 750));
+        obstacles.add(new Pipe(1800, 734));
+        enemies.add(new FlowerMonster(1805, 658));
     }
     public void nextLevel(){
 

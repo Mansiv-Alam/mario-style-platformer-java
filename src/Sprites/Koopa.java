@@ -14,7 +14,7 @@ public class Koopa extends Enemy{
     private boolean blnInShell, blnIsMoving;
 
     public Koopa(int x, int y){
-        super(x,y);
+        super(x,y, 40, 100);
         this.dblStartX = x;
     }
 

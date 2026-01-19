@@ -7,14 +7,29 @@ public class Coin {
     private int intX;
     private int intY;
     private int intSize = 50;
-    Image coinImage;
+    // Animations
+    private int intFrame = 0;
+    private final int intFrameDelay = 300;
+    private long lastFrameTime;
+
+    Image[] coinImages = new Image[3];
+    Image displayImage;
 
     public Coin(int x, int y){
         this.intX = x;
         this.intY = y;
-        Image img = new ImageIcon("src/Coin_1.png").getImage();
-        // Resizes the image
-        coinImage = img.getScaledInstance(intSize, intSize, Image.SCALE_SMOOTH);
+
+        loadImages();
+    }
+
+    public void loadImages(){
+        for (int i = 0; i < 3; i++){
+            Image img = new ImageIcon("src/Coin_" + (i + 1)  +".png").getImage();
+            // Resizes the image
+            coinImages[i] = img.getScaledInstance(intSize, intSize, Image.SCALE_SMOOTH);
+        }
+
+        displayImage = coinImages[0];
     }
 
     // Accessor Methods
@@ -30,10 +45,17 @@ public class Coin {
     }
 
     public void draw(Graphics g){
-        g.drawImage(coinImage, intX, intY, null);
+        g.drawImage(displayImage, intX, intY, null);
+
+        updateAnimation();
     }
 
     public void updateAnimation(){
-
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastFrameTime >= intFrameDelay) {
+            intFrame = (intFrame + 1) % coinImages.length; // loop through frames
+            displayImage = coinImages[intFrame];
+            lastFrameTime = currentTime;
+        }
     }
 }

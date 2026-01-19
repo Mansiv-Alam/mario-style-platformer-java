@@ -7,12 +7,14 @@ import java.awt.*;
 public abstract class Enemy {
     protected double dblX;
     protected double dblY;
-    protected int intWidth = 40;
-    protected int intHeight = 100;
+    protected int intWidth;
+    protected int intHeight;
 
-    public Enemy(int x, int y){
+    public Enemy(int x, int y, int width,int height){
         this.dblX = x;
         this.dblY = y;
+        this.intWidth = width;
+        this.intHeight = height;
     }
     // Accessor Methods
     public double getX() {

@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class Platform extends Obstacle{
 
-    Image platformImage;
+    private final Image platformImage;
 
     public Platform(int x, int y){
         super(x, y, 200, 67);

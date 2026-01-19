@@ -9,14 +9,20 @@ public class Block extends Obstacle{
 
     private int intPowerUp; // 1 for coin, 2 for power up
     private boolean blnBlockUsed = false;
-    Image blockImage;
-    Color currentColour = new Color(108, 69, 24);
+    private Image blockImage;
+    private final Image usedBlockImage;
 
     public Block(int x, int y){
         super(x, y, 80,60);
+
         Image img = new ImageIcon("src/PowerupBox.png").getImage();
         // Resizes the image
         blockImage = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
+
+        img = new ImageIcon("src/UsedBlock.png").getImage();
+        // Resizes the image
+        usedBlockImage = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
+
         spawnPowerUp();
     }
     public void draw(Graphics g){
@@ -25,7 +31,7 @@ public class Block extends Obstacle{
     public void collidesWith(GameController gmc, Player player){
         if (!blnBlockUsed){
             blnBlockUsed = true; // Make sure only one coin or power up is made per block
-            currentColour = new Color(211, 168, 118);
+            blockImage = usedBlockImage;
             if (intPowerUp == 1){
                 gmc.addCoin(new Coin(intX + (intWidth / 2) - 25, intY - 50));
             }
