@@ -2,21 +2,22 @@ package Sprites;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Player {
     private double dblPositionX;
     private double dblPositionY;
     // For Collisions
     private double dblPrevX, dblPrevY;
-    private int intWidth = 116, intHeight = 146;
+    private int intWidth = 99, intHeight = 124;
     // Physics Variable
     private double dblVelocityY = 0, dblVelocityX;
     private double dblJumpPower = -3.5, dblGravityUp = 0.02, dblGravityDown = 0.035, dblMaxFallSpeed = 6,dblSpeed = 0.8;
     private int intDirection = 1;
     // Health
-    private int intLives = 2, intPlayerState;
+    private int intLives = 2, intPlayerState = 1;
     private boolean blnInvincible;
-    private long InvincibleTime;
+    private long invincibleTime, lastFireTime;
 
     public boolean blnIsJumping, blnIsFalling;
     // Animation Variables
@@ -70,6 +71,9 @@ public class Player {
     public int getDirection(){
         return this.intDirection;
     }
+    public int getPlayerState(){
+        return intPlayerState;
+    }
     public void setPlayerState(int newPlayerState){
         this.intPlayerState = newPlayerState;
     }
@@ -118,13 +122,23 @@ public class Player {
         if(blnInvincible) return;
 
         blnInvincible = true;
-        InvincibleTime = System.currentTimeMillis();
+        invincibleTime = System.currentTimeMillis();
         // knock back
         dblPositionX -= 50; // push back horizontally
         dblPositionY -= 10;
         dblVelocityY = -2.2; // optional small hop
         intLives--;
+        intPlayerState = 1;
     }
+    public void shootFireball(ArrayList<Fireball> fireballs){
+        long currentTime = System.currentTimeMillis();
+        // 400-millisecond delay between shooting fireballs
+        if (currentTime - lastFireTime >= 400) {
+            fireballs.add(new Fireball(dblPositionX + intWidth / 2.0, dblPositionY + intHeight / 2.0, intDirection));
+            lastFireTime = currentTime; // reset cooldown
+        }
+    }
+
     public void stopHorizontalVel(){
         this.dblVelocityX = 0;
     }
@@ -135,7 +149,7 @@ public class Player {
 
         updatePosition(blnIsMovingRight, blnIsMovingLeft);
         if (blnInvincible) {
-            long elapsedTime = System.currentTimeMillis() - InvincibleTime;
+            long elapsedTime = System.currentTimeMillis() - invincibleTime;
             if (elapsedTime >= 1000){
                 blnInvincible = false; // invincibility ends after 1 second
             }

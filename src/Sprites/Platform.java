@@ -2,16 +2,23 @@ package Sprites;
 
 import Game.GameController;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class Platform extends Obstacle{
-    public Platform(int x, int y, int width, int height){
-        super(x, y, width, height);
+
+    Image platformImage;
+
+    public Platform(int x, int y){
+        super(x, y, 200, 67);
+
+        Image img = new ImageIcon("src/Platform.png").getImage();
+        // Resizes the image
+        platformImage = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
     }
 
     public void draw(Graphics g){
-        g.setColor(Color.LIGHT_GRAY);
-        g.fillRect(intX, intY, intWidth, intHeight);
+        g.drawImage(platformImage, intX, intY, intWidth, intHeight, null);
     }
     public void collidesWith(GameController gmc, Player player){
         player.onPlatform();

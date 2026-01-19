@@ -13,9 +13,10 @@ public class GameController extends JPanel {
     private int intLevel;
     private Player player;
     private ArrayList<Enemy> enemies = new ArrayList<>();
-    private ArrayList<Obstacle> obstacles = new ArrayList<>();;
-    private ArrayList<Coin> coins = new ArrayList<>();;
-    private ArrayList<Fireball> fireballs = new ArrayList<>();;
+    private ArrayList<Obstacle> obstacles = new ArrayList<>();
+    private ArrayList<Coin> coins = new ArrayList<>();
+    private Flower flower;
+    private ArrayList<Fireball> fireballs = new ArrayList<>();
     private boolean blnMovingRight, blnMovingLeft;
     boolean blnMouseClicked;
     private Image[] BgImages = new Image[1];
@@ -30,8 +31,9 @@ public class GameController extends JPanel {
             if (e.getKeyCode() == 'A') {blnMovingLeft = true;}
             if (e.getKeyCode() == 'D') { blnMovingRight = true;}
             if (e.getKeyCode() == ' ') {player.jump();}
-            if (e.getKeyCode() == 'F') {fireballs.add(new Fireball(player.getX() + player.getWidth() / 2.0,
-                    player.getY() + player.getHeight() / 2.0, player.getDirection()));}
+            if (e.getKeyCode() == 'F' && player.getPlayerState() == 2) {
+                player.shootFireball(fireballs);
+            }
         }
 
         @Override
@@ -67,6 +69,9 @@ public class GameController extends JPanel {
 
         // Draws all objects
         player.draw(g);
+        if (flower != null){
+            flower.draw(g);
+        }
         for (int i = 0; i < obstacles.size(); i++){
             obstacles.get(i).draw(g);
         }
@@ -206,6 +211,10 @@ public class GameController extends JPanel {
     public void addCoin(Coin coin){
         coins.add(coin);
     }
+    public void addFlower(Flower newflower){
+        flower = newflower;
+        flower.activateFlower();
+    }
     public void removeEnemy(int index){
         enemies.remove(index);
     }
@@ -223,10 +232,10 @@ public class GameController extends JPanel {
 
     }
     public void levelOne(){
-        obstacles.add(new Platform(300,680, 200, 50));
-        obstacles.add(new Platform(700,580, 200, 50));
-        obstacles.add(new Block(800,200, 50));
-        obstacles.add(new Spikes(1100, 810, 50));
+        obstacles.add(new Platform(300,680));
+        obstacles.add(new Platform(700,580));
+        obstacles.add(new Block(800,200));
+        obstacles.add(new Spikes(1100, 813));
         coins.add(new Coin(300,300));
         coins.add(new Coin(500,300));
         coins.add(new Coin(600,500));

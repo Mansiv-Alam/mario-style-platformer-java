@@ -1,15 +1,20 @@
 package Sprites;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class Coin {
     private int intX;
     private int intY;
     private int intSize = 50;
+    Image coinImage;
 
     public Coin(int x, int y){
         this.intX = x;
         this.intY = y;
+        Image img = new ImageIcon("src/Coin_1.png").getImage();
+        // Resizes the image
+        coinImage = img.getScaledInstance(intSize, intSize, Image.SCALE_SMOOTH);
     }
 
     // Accessor Methods
@@ -25,8 +30,7 @@ public class Coin {
     }
 
     public void draw(Graphics g){
-        g.setColor(Color.yellow);
-        g.fillRect(intX, intY, intSize, intSize);
+        g.drawImage(coinImage, intX, intY, null);
     }
 
     public void updateAnimation(){
