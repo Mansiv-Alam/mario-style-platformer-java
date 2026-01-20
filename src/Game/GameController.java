@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 public class GameController extends JPanel {
@@ -18,8 +20,9 @@ public class GameController extends JPanel {
     private Flower flower;
     private ArrayList<Fireball> fireballs = new ArrayList<>();
     private boolean blnMovingRight, blnMovingLeft;
-    boolean blnMouseClicked;
-    private Image[] BgImages = new Image[2];
+    private boolean blnGameOver = false;
+    private Image[] BgImages = new Image[3];
+    private Image GameOver;
 
     public class MyKeyListener implements KeyListener
     {
@@ -43,14 +46,50 @@ public class GameController extends JPanel {
             System.out.println("keyReleased="+KeyEvent.getKeyText(e.getKeyCode()));
         }
     }
+    public class MyMouseListener implements MouseListener {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            System.out.println(e);
+            Rectangle settingButtonBounds = new Rectangle(1810, 15, 80, 80);
+            // Sees if the rectangle contains the coordinates that the mouse is at in order to use the settings button
+            if (settingButtonBounds.contains(e.getX(),e.getY())){
+                // Get the current window that holds this panel
+                JFrame window = (JFrame) SwingUtilities.getWindowAncestor(GameController.this);
+                // Create the settings panel and add it
+                SettingsPanel settings = new SettingsPanel(GameController.this); // pass window if you want to go back
+
+                // Remove the game panel
+                window.getContentPane().removeAll();
+
+                window.getContentPane().add(settings);
+
+                // Refresh
+                window.revalidate();
+                window.repaint();
+            }
+        }
+        @Override
+        public void mousePressed(MouseEvent e) {}
+
+        @Override
+        public void mouseReleased(MouseEvent e) {}
+
+        @Override
+        public void mouseEntered(MouseEvent e) {}
+
+        @Override
+        public void mouseExited(MouseEvent e) {}
+    }
 
     GameController(){
         player = new Player(100, 800);
         MyKeyListener listener = new MyKeyListener();
+        MyMouseListener mouseListener = new MyMouseListener();
+        addMouseListener(mouseListener);
         addKeyListener(listener);
         setFocusable(true);
         levelOne();
-        System.out.println(System.currentTimeMillis());
 
         loadBGImages();
     }
@@ -58,14 +97,21 @@ public class GameController extends JPanel {
         // Gets the image from the source files
         BgImages[0] = new ImageIcon("src/MorioGround.png").getImage();
         BgImages[1] = new ImageIcon("src/MorioSky.png").getImage();
-
+        BgImages[2] = new ImageIcon("src/Settings.png").getImage();
+        GameOver = new ImageIcon("src/GameOver.png").getImage();
     }
 
     public void paint(Graphics g) {
         // Background
         g.drawImage(BgImages[1], 0, 0, null);
         g.drawImage(BgImages[0], 0, 863, null);
+        g.drawImage(BgImages[2], 1810, 15, null);
 
+        if (player.getLives() == 0){
+            g.drawImage(GameOver, 600, 200, null);
+            blnGameOver = true;
+            return;
+        }
         update();
 
         // Draws all objects
@@ -180,6 +226,7 @@ public class GameController extends JPanel {
                 if ((int)player.getPrevY() + playerRect.height <= obstacleRect.y && player.getVelocityY() >= 0 ) {
                     player.setPlayerPosition(player.getX(), obstacleRect.y - player.getHeight());
                     player.stopVerticalVel();
+                    player.onPlatform();
                     obstacles.get(i).collidesWith(this, player);
                     break;
                 }
@@ -214,17 +261,8 @@ public class GameController extends JPanel {
         enemies.remove(index);
     }
 
-    public void startGame(){
-
-    }
-    public void saveGame(){
-
-    }
-    public void loadGame(){
-
-    }
     public void gameOver(){
-
+        //g.drawImage(BgImages[1], 0, 0, null);
     }
     public void levelOne(){
         obstacles.add(new Platform(300,680));
@@ -235,7 +273,7 @@ public class GameController extends JPanel {
         coins.add(new Coin(500,300));
         coins.add(new Coin(600,500));
         enemies.add(new Goomba(1450, 813));
-        enemies.add(new Koopa(1650, 750));
+        enemies.add(new Koopa(1650, 773));
         obstacles.add(new Pipe(1800, 734));
         enemies.add(new FlowerMonster(1805, 658));
     }
@@ -244,5 +282,11 @@ public class GameController extends JPanel {
     }
     public void increaseScore(){
 
+    }
+    public int returnScore(){
+        return this.intScore;
+    }
+    public int returnLevel(){
+        return this.intLevel;
     }
 }

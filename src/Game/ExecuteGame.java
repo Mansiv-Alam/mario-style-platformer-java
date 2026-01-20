@@ -10,7 +10,7 @@ public class ExecuteGame {
         //window.setUndecorated(true); for fullscreen
         window.setBackground(Color.CYAN);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.getContentPane().add(new GameController());
+        window.getContentPane().add(new GameMenu());
         window.setVisible(true);
     }
 }

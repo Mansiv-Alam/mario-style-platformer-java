@@ -12,7 +12,7 @@ public class Player {
     private int intWidth = 80, intHeight = 103;
     // Physics Variable
     private double dblVelocityY = 0, dblVelocityX;
-    private double dblJumpPower = -3.5, dblGravityUp = 0.02, dblGravityDown = 0.035, dblMaxFallSpeed = 6,dblSpeed = 0.8;
+    private final double dblJumpPower = -3.5, dblGravityUp = 0.02, dblGravityDown = 0.035, dblMaxFallSpeed = 6,dblSpeed = 0.8;
     private int intDirection = 1;
     // Health
     private int intLives = 2, intPlayerState = 1;
@@ -23,37 +23,38 @@ public class Player {
     // Animation Variables
     private int intAnimationFrame = 0;
     private int intFrameCounter ;
-    private final int intFrameDelay = 150;
-    private Image[] playerImages;
-    private Image[] playerImagesRight = new Image[7];
-    private Image[] playerImagesLeft = new Image[7];
+    private final int intFrameDelay = 50;
+    private final Image[] playerImages = new Image[2];
+    private final Image[] playerImagesRight = new Image[7];
+    private final Image[] playerImagesLeft = new Image[7];
     private Image imageDisplayed;
 
     public Player(double startX, double startY){
         this.dblPositionX = startX;
         this.dblPositionY = startY;
 
-        playerImages = new Image[2];
         loadImages();
     }
     public void loadImages(){
-
-        // Names of the files
-        //String[] fileNames = {"Morio_1.png", "Morio_2.png"};
+        // Gets the image from the source files
         Image img = new ImageIcon("src/Morio_1.png").getImage();
         // Resizes the image
         playerImagesRight[0] = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
+
         img = new ImageIcon("src/Morio_2.png").getImage();
-        // Resizes the image
         playerImagesLeft[0] = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
 
+        for (int i = 0; i < 2; i++) {
+            img = new ImageIcon("src/Morio_" + (i + 3) + ".png").getImage();
+            playerImages[i] = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
+
+        }
+        // Loops through the running frames to load them into the arrays
         for (int i = 0; i < 6; i++) {
-            // Gets the image from the source files
             img = new ImageIcon("src/Morio_" + (i + 5 ) + ".png").getImage();
             playerImagesRight[i + 1] = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
 
             img = new ImageIcon("src/Morio_" + (i + 11 ) + ".png").getImage();
-            // Resizes the image
             playerImagesLeft[i + 1] = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
 
         }
@@ -82,6 +83,9 @@ public class Player {
     }
     public int getDirection(){
         return this.intDirection;
+    }
+    public int getLives(){
+        return this.intLives;
     }
     public int getPlayerState(){
         return intPlayerState;
@@ -206,7 +210,6 @@ public class Player {
     }
     // Collisions
     public void onPlatform(){
-
         blnIsFalling = false;
         blnIsJumping = false;
     }
@@ -214,6 +217,20 @@ public class Player {
         return new Rectangle((int)dblPositionX, (int)dblPositionY, intWidth, intHeight);
     }
     public void updateAnimations(){
+
+        // Jump animations
+        if (Math.abs((int)dblVelocityY) != 0 || (blnIsFalling || blnIsJumping)){
+            intAnimationFrame = 0;
+            if (intDirection == 1) {
+                imageDisplayed = playerImages[0];
+            }
+            else{
+                imageDisplayed = playerImages[1];
+            }
+            return;
+        }
+
+        // Idle Animations
         if(dblVelocityX == 0){
             intAnimationFrame = 0;
             if (intDirection == 1) {
@@ -225,6 +242,7 @@ public class Player {
             return;
         }
 
+        // Running animations
         intFrameCounter++;
         if (intFrameCounter >= intFrameDelay) {
             intAnimationFrame = (intAnimationFrame + 1) % 6;

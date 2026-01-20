@@ -10,11 +10,13 @@ public class Koopa extends Enemy{
     private double dblStartX;
     private int intRange = 100;
     private int intDirection = 1;
-    private double dblSpeed = 0.5, dblShellSpeed = 2, dblShellDirection;
+    private double dblSpeed = 0.25, dblShellSpeed = 1.5, dblShellDirection;
     private long stompTimer;
     private boolean blnInShell, blnIsMoving;
     // Animations
-    Image[] shellImages = new Image[3];
+    Image[] shellImages = new Image[4];
+    Image[] KoopaImagesLeft = new Image[5];
+    Image[] KoopaImagesRight = new Image[5];
 
     Image imgDisplayed;
     private int intFrame = 0;
@@ -22,18 +24,35 @@ public class Koopa extends Enemy{
     private final int intFrameDelay = 400;
 
     public Koopa(int x, int y){
-        super(x,y, 40, 100);
+        super(x,y, 58, 90);
         this.dblStartX = x;
         loadImages();
     }
 
     public void loadImages(){
-        for (int i = 0; i < 3; i++){
+        int[] intAnimationSequence = {1, 3, 4, 2};
+
+        for (int i = 0; i < intAnimationSequence.length; i++){
             // Gets the image from the source files
-            Image img = new ImageIcon("src/KoopaShell_" + (i + 1) + ".png").getImage();
+            Image img = new ImageIcon("src/KoopaShell_" + intAnimationSequence[i] + ".png").getImage();
             // Resizes the image
             shellImages[i] = img.getScaledInstance(68, 60, Image.SCALE_SMOOTH);
         }
+
+        intAnimationSequence = new int[]{1, 2, 1, 3, 1};
+        // Left walking animations
+        for (int i = 0; i < intAnimationSequence.length; i++){
+            Image img = new ImageIcon("src/Koopa_" + intAnimationSequence[i] + ".png").getImage();
+            KoopaImagesLeft[i] = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
+        }
+
+        intAnimationSequence = new int[]{4, 5, 4, 6, 4};
+        // Right walking animations
+        for (int i = 0; i < intAnimationSequence.length; i++){
+            Image img = new ImageIcon("src/Koopa_" + intAnimationSequence[i] + ".png").getImage();
+            KoopaImagesRight[i] = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
+        }
+
         imgDisplayed = shellImages[0];
     }
     @Override
@@ -42,10 +61,13 @@ public class Koopa extends Enemy{
             if (dblShellDirection != 0){
                 updateShellAnimations();
             }
+            else {
+                imgDisplayed = shellImages[0];
+            }
             g.drawImage(imgDisplayed, (int)dblX, (int)dblY, intWidth, intHeight, null);
         } else {
-            g.setColor(Color.GREEN);
-            g.fillRect((int) dblX, (int) dblY, intWidth, intHeight); // shell smaller
+            updateWalkingAnimations();
+            g.drawImage(imgDisplayed, (int)dblX, (int)dblY, intWidth, intHeight, null);
         }
     }
     @Override
@@ -100,6 +122,23 @@ public class Koopa extends Enemy{
             gmc.removeEnemy(index);
         }
     }
+    public void updateWalkingAnimations(){
+        double dblDistanceFromLeftEnd = dblX - (dblStartX - intRange);
+        double dblFraction = dblDistanceFromLeftEnd / (intRange * 2); // Calculates the distance moved in percentage
+        dblFraction = Math.min(Math.max(dblFraction, 0), 1);
+
+        // Pick frame from left or right depending on direction
+        if (intDirection == 1) {
+            int intFrameIndex = (int)(dblFraction * KoopaImagesRight.length); // Transitions the distance moved to the animation frame
+            intFrameIndex = Math.min(intFrameIndex, KoopaImagesRight.length - 1);
+            imgDisplayed = KoopaImagesRight[intFrameIndex];
+        } else {
+            int intFrameIndex = (int)(dblFraction * KoopaImagesLeft.length);
+            intFrameIndex = Math.min(intFrameIndex, KoopaImagesLeft.length - 1);
+            imgDisplayed = KoopaImagesLeft[intFrameIndex];
+        }
+    }
+
     public void updateShellAnimations(){
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastFrameTime >= intFrameDelay) {
