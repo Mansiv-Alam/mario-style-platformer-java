@@ -2,6 +2,7 @@ package Sprites;
 
 import Game.GameController;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class Fireball {
@@ -12,11 +13,13 @@ public class Fireball {
     private double velX, velY = 0;
     private int intSize = 20, intBounceCount = 0;
     private boolean blnActive = true;
+    private Image fireballImage;
 
     public Fireball(double dblStartX, double dblStartY, int intDirection){
         this.dblX = dblStartX;
         this.dblY = dblStartY;
         this.velX = 2 * intDirection;
+        fireballImage = new ImageIcon("src/Fireball.png").getImage();
     }
     // Accessor Methods
     public double getY() {
@@ -66,8 +69,7 @@ public class Fireball {
         intBounceCount++;
     }
     public void draw(Graphics g) {
-        g.setColor(Color.ORANGE);
-        g.fillOval((int)dblX, (int)dblY, intSize, intSize);
+        g.drawImage(fireballImage, (int)dblX, (int)dblY,null);
     }
     public Rectangle getBounds() {
         return new Rectangle((int)dblX, (int)dblY, intSize, intSize);

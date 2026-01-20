@@ -4,13 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
 public class SettingsPanel extends JPanel {
 
-    private Image[] menuBackground = new Image[2];
+    private Image[] menuBackground = new Image[3];
     private JButton btnSave;
     private GameController game; // reference to go back to the game
 
@@ -19,6 +18,8 @@ public class SettingsPanel extends JPanel {
 
         menuBackground[0] = new ImageIcon("src/MorioSky.png").getImage();
         menuBackground[1] = new ImageIcon("src/MorioGround.png").getImage();
+        menuBackground[2] = new ImageIcon("src/MorioClouds.png").getImage();
+
 
         setLayout(null); // Manually positioned buttons
 
@@ -114,6 +115,7 @@ public class SettingsPanel extends JPanel {
         super.paintComponent(g);
         g.drawImage(menuBackground[0], 0, 0, getWidth(), getHeight(), this);
         g.drawImage(menuBackground[1], 0, 863, 1920, 217, this);
+        g.drawImage(menuBackground[2], 30, 200, 1748, 320, this);
         // Title
         g.setColor(Color.WHITE);
         g.setFont(new Font("Pt Sans", Font.PLAIN, 48));

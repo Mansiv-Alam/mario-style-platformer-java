@@ -11,8 +11,8 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 public class GameController extends JPanel {
-    private int intScore;
-    private int intLevel;
+    private int intScore, intCurrentScore;
+    private int intLevel = 1;
     private Player player;
     private ArrayList<Enemy> enemies = new ArrayList<>();
     private ArrayList<Obstacle> obstacles = new ArrayList<>();
@@ -21,7 +21,7 @@ public class GameController extends JPanel {
     private ArrayList<Fireball> fireballs = new ArrayList<>();
     private boolean blnMovingRight, blnMovingLeft;
     private boolean blnGameOver = false;
-    private Image[] BgImages = new Image[3];
+    private final Image[] BgImages = new Image[4];
     private Image GameOver;
 
     public class MyKeyListener implements KeyListener
@@ -43,14 +43,12 @@ public class GameController extends JPanel {
         public void keyReleased(KeyEvent e) {
             if (e.getKeyCode() == 'A') {blnMovingLeft = false;}
             if (e.getKeyCode() == 'D') {blnMovingRight = false;}
-            System.out.println("keyReleased="+KeyEvent.getKeyText(e.getKeyCode()));
         }
     }
     public class MyMouseListener implements MouseListener {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            System.out.println(e);
             Rectangle settingButtonBounds = new Rectangle(1810, 15, 80, 80);
             // Sees if the rectangle contains the coordinates that the mouse is at in order to use the settings button
             if (settingButtonBounds.contains(e.getX(),e.getY())){
@@ -61,12 +59,34 @@ public class GameController extends JPanel {
 
                 // Remove the game panel
                 window.getContentPane().removeAll();
-
                 window.getContentPane().add(settings);
 
                 // Refresh
                 window.revalidate();
                 window.repaint();
+            }
+            if (blnGameOver){
+                Rectangle RetryBounds = new Rectangle(701, 354, 400, 96);
+                Rectangle QuitBounds = new Rectangle(701, 521, 400, 96);
+
+                if (QuitBounds.contains(e.getX(),e.getY())){
+                    // Get the current window that holds this panel
+                    JFrame window = (JFrame) SwingUtilities.getWindowAncestor(GameController.this);
+                    // Create the settings panel and add it
+                    GameMenu menu = new GameMenu();
+
+                    // Remove the game panel
+                    window.getContentPane().removeAll();
+                    window.getContentPane().add(menu);
+
+                    // Refresh
+                    window.revalidate();
+                    window.repaint();
+                }
+                else if (RetryBounds.contains(e.getX(),e.getY())){
+                    System.out.println("Output");
+                    resetLevel();
+                }
             }
         }
         @Override
@@ -83,13 +103,13 @@ public class GameController extends JPanel {
     }
 
     GameController(){
-        player = new Player(100, 800);
+        player = new Player(25, 822);
         MyKeyListener listener = new MyKeyListener();
         MyMouseListener mouseListener = new MyMouseListener();
         addMouseListener(mouseListener);
         addKeyListener(listener);
         setFocusable(true);
-        levelOne();
+        loadLevel();
 
         loadBGImages();
     }
@@ -97,7 +117,8 @@ public class GameController extends JPanel {
         // Gets the image from the source files
         BgImages[0] = new ImageIcon("src/MorioGround.png").getImage();
         BgImages[1] = new ImageIcon("src/MorioSky.png").getImage();
-        BgImages[2] = new ImageIcon("src/Settings.png").getImage();
+        BgImages[2] = new ImageIcon("src/MorioClouds.png").getImage();
+        BgImages[3] = new ImageIcon("src/Settings.png").getImage();
         GameOver = new ImageIcon("src/GameOver.png").getImage();
     }
 
@@ -105,13 +126,29 @@ public class GameController extends JPanel {
         // Background
         g.drawImage(BgImages[1], 0, 0, null);
         g.drawImage(BgImages[0], 0, 863, null);
-        g.drawImage(BgImages[2], 1810, 15, null);
+        g.drawImage(BgImages[2], 30, 200, 1748, 320, null);
+        g.drawImage(BgImages[3], 1810, 15, null);
 
-        if (player.getLives() == 0){
+        g.setColor(Color.WHITE);                 // White text
+        g.setFont(new Font("Pt Sans", Font.PLAIN, 36)); // Font style and size
+        g.drawString("Score: " + intScore, 20, 50);
+        if (player.getPlayerState() == 2) {
+            g.drawString("Firestate: Active", 240, 50);
+        }
+        else {
+            g.drawString("Firestate: Inactive", 240, 50);
+        }
+
+        if (blnGameOver && intLevel != 4){
             g.drawImage(GameOver, 600, 200, null);
-            blnGameOver = true;
+            repaint();
             return;
         }
+        else if (blnGameOver){
+            g.setFont(new Font("Pt Sans", Font.PLAIN, 48));
+            g.drawString("You Won!", 850, 400);
+        }
+
         update();
 
         // Draws all objects
@@ -141,7 +178,11 @@ public class GameController extends JPanel {
         repaint();
     }
     public void update(){
-        player.updatePlayer(blnMovingRight, blnMovingLeft);
+        if (player.getLives() == 0){
+            blnGameOver = true;
+            return;
+        }
+        player.updatePlayer(blnMovingRight, blnMovingLeft, this);
 
         updateFireballs();
         updateEnemies();
@@ -152,7 +193,7 @@ public class GameController extends JPanel {
         for (int i = 0; i < coins.size(); i++){
             if (player.getPlayerBounds().intersects(coins.get(i).getBounds())){
                 coins.remove(i);
-                intScore++;
+                intCurrentScore += 10;
             }
         }
     }
@@ -200,7 +241,10 @@ public class GameController extends JPanel {
     }
 
     public void updateEnemies(){
-        for (int i = 0; i < enemies.size(); i++){
+        for (int i = (enemies.size() - 1); i >= 0; i--){
+            Enemy currentEnemy = enemies.get(i);
+            boolean blnShellRemoved = false;
+
             // Checks for collision
             if (player.getPlayerBounds().intersects(enemies.get(i).getBounds())){
                 if (player.getVelocityY() > 0 && (int)player.getPrevY() + player.getHeight() <= enemies.get(i).getBounds().y) {
@@ -210,7 +254,36 @@ public class GameController extends JPanel {
                     enemies.get(i).collidesWith(this, player);
                 }
             }
-            enemies.get(i).move();
+            // If all enemies are dead don't continue collision checks
+            if (enemies.isEmpty()){
+                return;
+            }
+            // For Koopa shells
+            for (int j = (enemies.size() - 1); j >= 0; j--){
+                // Koopa shells cant destroy itself
+                if (i == j) {continue;}
+                Enemy other = enemies.get(j);
+                // If Koopa Shell touches other enemies (mainly Goombas)
+                if (currentEnemy.getBounds().intersects(other.getBounds())){
+                    removeEnemy(i);
+                    blnShellRemoved = true;
+                    break;
+                }
+            }
+
+            if (blnShellRemoved){continue;}
+
+            for (int j = 0; j < obstacles.size(); j++){
+                // If Koopa shell touches obstacles
+                if (currentEnemy.getBounds().intersects(obstacles.get(j).getBounds())){
+                    removeEnemy(i);
+                    blnShellRemoved = true;
+                    break;
+                }
+            }
+            if (!blnShellRemoved){
+                enemies.get(i).move();
+            }
         }
     }
 
@@ -260,28 +333,85 @@ public class GameController extends JPanel {
     public void removeEnemy(int index){
         enemies.remove(index);
     }
+    public void saveData(int intSavedScore,int intSavedLevel){
+        this.intScore = intSavedScore;
+        this.intLevel = intSavedLevel;
+    }
+    public void resetLevel(){
+        intCurrentScore = 0;
+        blnGameOver = false;
 
-    public void gameOver(){
-        //g.drawImage(BgImages[1], 0, 0, null);
+        enemies.clear();
+        obstacles.clear();
+        coins.clear();
+        fireballs.clear();
+        flower = null;
+
+        loadLevel();
     }
     public void levelOne(){
+        obstacles.add(new Platform(800,640));
+        obstacles.add(new Block(850,300));
+    }
+    public void levelTwo(){
         obstacles.add(new Platform(300,680));
         obstacles.add(new Platform(700,580));
         obstacles.add(new Block(800,200));
-        obstacles.add(new Spikes(1100, 813));
-        coins.add(new Coin(300,300));
-        coins.add(new Coin(500,300));
-        coins.add(new Coin(600,500));
-        enemies.add(new Goomba(1450, 813));
-        enemies.add(new Koopa(1650, 773));
-        obstacles.add(new Pipe(1800, 734));
-        enemies.add(new FlowerMonster(1805, 658));
+        obstacles.add(new Spikes(200, 813));
+        coins.add(new Coin(300,300, false));
+        coins.add(new Coin(500,300, false));
+        coins.add(new Coin(600,500, false));
+        enemies.add(new Goomba(1350, 813));
+        enemies.add(new Koopa(1600, 773));
+        obstacles.add(new Pipe(950, 734));
+        enemies.add(new FlowerMonster(955, 658));
+    }
+    public void levelThree(){
+        enemies.add(new Goomba(260, 813));
+        obstacles.add(new Platform(450,680));
+        obstacles.add(new Platform(200,380));
+        obstacles.add(new Block(250,100));
+        coins.add(new Coin(300,300, false));
+        coins.add(new Coin(500,400, false));
+        obstacles.add(new Pipe(710, 734));
+        enemies.add(new FlowerMonster(715, 658));
+        obstacles.add(new Platform(850,550));
+        obstacles.add(new Platform(1025,550));
+        obstacles.add(new Spikes(983, 505));
+        coins.add(new Coin(1020,305, false));
+        obstacles.add(new Spikes(1043, 505));
+        enemies.add(new Koopa(1400, 773));
+        enemies.add(new Goomba(1700,813));
     }
     public void nextLevel(){
+        intLevel++;
+        intScore += intCurrentScore;
 
+        enemies.clear();
+        obstacles.clear();
+        coins.clear();
+        fireballs.clear();
+        flower = null;
+
+        loadLevel();
     }
     public void increaseScore(){
-
+        intCurrentScore += 20; // More score for blocks and Enemy deaths
+    }
+    public void loadLevel(){
+        player = new Player(25, 822); // reset position + lives
+        if (intLevel == 1){
+            levelOne();
+        }
+        else if (intLevel == 2){
+            levelTwo();
+        }
+        else if (intLevel == 3){
+            levelThree();
+        }
+        else if (intLevel == 4){
+            blnGameOver = true;
+        }
     }
     public int returnScore(){
         return this.intScore;

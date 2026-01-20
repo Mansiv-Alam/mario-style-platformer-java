@@ -5,17 +5,20 @@ import java.awt.*;
 import java.awt.desktop.SystemEventListener;
 import java.awt.event.*;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.Scanner;
 
 public class GameMenu extends JPanel{
 
-    private Image[] menuBackground = new Image[2];
+    private Image[] menuBackground = new Image[4];
     private JButton btnStart, btnExit, btnLoadGame, btnCredits;
 
     public GameMenu(){
 
         menuBackground[0] = new ImageIcon("src/MorioSky.png").getImage();
         menuBackground[1] = new ImageIcon("src/MorioGround.png").getImage();
+        menuBackground[2] = new ImageIcon("src/MorioClouds.png").getImage();
 
         setLayout(null); // We'll manually position buttons
 
@@ -90,7 +93,29 @@ public class GameMenu extends JPanel{
                 System.exit(0);
             }
             else if (strCommand.equals("LoadGame")){
-                //FileReader FileRead = new FileReader(new File(""));
+                try {
+                    Scanner fileIn = new Scanner(new File("SaveData.txt"));
+                    int savedScore = fileIn.nextInt();
+                    int savedLevel = fileIn.nextInt();
+
+                    // Get the current window that holds this menu
+                    JFrame window = (JFrame) SwingUtilities.getWindowAncestor(GameMenu.this);
+
+                    // Remove the menu panel from the window
+                    window.getContentPane().removeAll();
+
+                    // Add the game panel to the window
+                    GameController game = new GameController();
+                    window.getContentPane().add(game);
+                    game.requestFocusInWindow(); // make the panel focus so the keyboard inputs work
+                    game.saveData(savedScore, savedLevel);
+
+                    // Refresh the window to show the new content
+                    window.revalidate();
+                    window.repaint();
+                } catch (FileNotFoundException ex) {
+                    JOptionPane.showMessageDialog(GameMenu.this, "No save file found.");
+                }
             }
             else if(strCommand.equals("Credits")){
                 // Get the current window that holds this menu
@@ -115,6 +140,7 @@ public class GameMenu extends JPanel{
         super.paintComponent(g);
         g.drawImage(menuBackground[0], 0, 0, getWidth(), getHeight(), this);
         g.drawImage(menuBackground[1], 0, 863, 1920, 217, this);
+        g.drawImage(menuBackground[2], 30, 200, 1748, 320, this);
         // Title
         g.setColor(Color.WHITE);
         g.setFont(new Font("Pt Sans", Font.PLAIN, 48));

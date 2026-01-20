@@ -1,5 +1,7 @@
 package Sprites;
 
+import Game.GameController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -93,6 +95,9 @@ public class Player {
     public void setPlayerState(int newPlayerState){
         this.intPlayerState = newPlayerState;
     }
+    public void setLives(int intLives){
+        this.intLives = intLives;
+    }
     public double getVelocityX(){
         return this.dblVelocityX;
     }
@@ -161,9 +166,9 @@ public class Player {
     public void stopVerticalVel(){
         this.dblVelocityY = 0;
     }
-    public void updatePlayer(boolean blnIsMovingRight, boolean blnIsMovingLeft){
+    public void updatePlayer(boolean blnIsMovingRight, boolean blnIsMovingLeft, GameController gmc){
 
-        updatePosition(blnIsMovingRight, blnIsMovingLeft);
+        updatePosition(blnIsMovingRight, blnIsMovingLeft, gmc);
         if (blnInvincible) {
             long elapsedTime = System.currentTimeMillis() - invincibleTime;
             if (elapsedTime >= 1000){
@@ -172,7 +177,7 @@ public class Player {
         }
     }
 
-    public void updatePosition(boolean blnIsMovingRight, boolean blnIsMovingLeft){
+    public void updatePosition(boolean blnIsMovingRight, boolean blnIsMovingLeft, GameController gmc){
         // Saves previous position
         dblPrevX = this.dblPositionX;
         dblPrevY = this.dblPositionY;
@@ -194,6 +199,15 @@ public class Player {
 
         dblPositionX += dblVelocityX;
         dblPositionY += dblVelocityY;
+
+        // left boundary
+        if (dblPositionX < 0) {
+            dblPositionX = 0;
+        }
+        // right boundary
+        if (dblPositionX + intWidth > 1920) {
+            gmc.nextLevel();
+        }
 
         // Check if player hits the ground
         if (dblPositionY + intHeight >= 863) {

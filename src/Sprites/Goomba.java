@@ -86,11 +86,13 @@ public class Goomba extends Enemy{
     @Override
     public void onStomp(GameController gmc, int index, Player player){
         gmc.removeEnemy(index);
+        gmc.increaseScore();
         player.bounce();
     }
     @Override
     public void onHitWithFireball(GameController gmc, int index, Player player) {
         gmc.removeEnemy(index);
+        gmc.increaseScore();
     }
     public void updateAnimations(){
         if (blnTurning) {

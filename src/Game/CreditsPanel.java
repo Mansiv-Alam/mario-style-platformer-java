@@ -98,8 +98,5 @@ public class CreditsPanel extends JPanel {
         super.paintComponent(g);
         g.drawImage(menuBackground[0], 0, 0, getWidth(), getHeight(), this);
         g.drawImage(menuBackground[1], 0, 863, 1920, 217, this);
-        // Title
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial", Font.BOLD, 36));
     }
 }

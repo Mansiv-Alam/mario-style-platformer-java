@@ -11,14 +11,21 @@ public class Coin {
     private int intFrame = 0;
     private final int intFrameDelay = 300;
     private long lastFrameTime;
+    private boolean blnFromBlock, blnActive;
+    private long spawnTime;
+    private final int intDisappearDelay = 2000;
 
     Image[] coinImages = new Image[4];
     Image displayImage;
 
-    public Coin(int x, int y){
+    public Coin(int x, int y, boolean blnFromBlock){
         this.intX = x;
         this.intY = y;
-
+        this.blnFromBlock = blnFromBlock;
+        if (blnFromBlock){
+            spawnTime = System.currentTimeMillis();
+        }
+        blnActive = true;
         loadImages();
     }
 
@@ -47,9 +54,10 @@ public class Coin {
     }
 
     public void draw(Graphics g){
-        g.drawImage(displayImage, intX, intY, null);
-
-        updateAnimation();
+        if (!blnActive){return;} // don't display coins that aren't active
+            g.drawImage(displayImage, intX, intY, null);
+            updateAnimation();
+        checkDisappearTiming();
     }
 
     public void updateAnimation(){
@@ -58,6 +66,15 @@ public class Coin {
             intFrame = (intFrame + 1) % coinImages.length; // loop through frames
             displayImage = coinImages[intFrame];
             lastFrameTime = currentTime;
+        }
+    }
+    public void checkDisappearTiming(){
+        if (blnFromBlock){
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - spawnTime >= intDisappearDelay){
+                blnActive = false;
+
+            }
         }
     }
 }

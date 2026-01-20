@@ -8,9 +8,9 @@ import java.awt.*;
 public class Koopa extends Enemy{
 
     private double dblStartX;
-    private int intRange = 100;
+    private int intRange = 75;
     private int intDirection = 1;
-    private double dblSpeed = 0.25, dblShellSpeed = 1.5, dblShellDirection;
+    private double dblSpeed = 0.18, dblShellSpeed = 1.5, dblShellDirection;
     private long stompTimer;
     private boolean blnInShell, blnIsMoving;
     // Animations
@@ -120,6 +120,7 @@ public class Koopa extends Enemy{
     public void onHitWithFireball(GameController gmc, int index, Player player) {
         if (!blnInShell){
             gmc.removeEnemy(index);
+            gmc.increaseScore();
         }
     }
     public void updateWalkingAnimations(){

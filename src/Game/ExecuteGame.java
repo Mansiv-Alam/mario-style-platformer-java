@@ -1,3 +1,8 @@
+// Name: Mansiv Alam
+// Date: January 20 2026
+// Title Morio Culminating Game
+// Purpose: To make a mario like game using all units of the ICS4U course, classes, OOP, Abstract data types,
+
 package Game;
 
 import javax.swing.*;

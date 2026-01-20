@@ -29,17 +29,18 @@ public class Block extends Obstacle{
         g.drawImage(blockImage, intX, intY, null);
     }
     public void collidesWith(GameController gmc, Player player){
+        // Adds powerups or coins to the player or coin list in the game controller by passing game controller as a parameter
         if (!blnBlockUsed){
             blnBlockUsed = true; // Make sure only one coin or power up is made per block
             blockImage = usedBlockImage;
             if (intPowerUp == 1){
-                gmc.addCoin(new Coin(intX + (intWidth / 2) - 25, intY - 50));
+                gmc.addCoin(new Coin(intX + (intWidth / 2) - 25, intY - 50, true));
+                gmc.increaseScore();
             }
             else {
                 player.setPlayerState(2);
                 gmc.addFlower(new Flower(intX + (intWidth / 2) - 25, intY - 50));
             }
-            // Adds powerups or coins to the player or coin list in the game controller by passing game controller as a parameter
         }
     }
     public void spawnPowerUp(){
