@@ -248,8 +248,6 @@ public class GameController extends JPanel {
 
     public void updateEnemies(){
         for (int i = (enemies.size() - 1); i >= 0; i--){
-            Enemy currentEnemy = enemies.get(i);
-            boolean blnShellRemoved = false;
 
             // Checks for collision
             if (player.getPlayerBounds().intersects(enemies.get(i).getBounds())){
@@ -260,10 +258,11 @@ public class GameController extends JPanel {
                     enemies.get(i).collidesWith(this, player);
                 }
             }
+        }
+        for (int i = (enemies.size() - 1); i >= 0; i--){
+            Enemy currentEnemy = enemies.get(i);
+            boolean blnShellRemoved = false;
             // If all enemies are dead don't continue collision checks
-            if (enemies.isEmpty()){
-                return;
-            }
             // For Koopa shells
             for (int j = (enemies.size() - 1); j >= 0; j--){
                 // Koopa shells cant destroy itself
