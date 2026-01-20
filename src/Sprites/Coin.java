@@ -33,7 +33,7 @@ public class Coin {
         int[] intAnimationSequence = {1, 2, 1, 3};
 
         for (int i = 0; i < intAnimationSequence.length; i++){
-            Image img = new ImageIcon("src/Coin_" + intAnimationSequence[i] + ".png").getImage();
+            Image img = new ImageIcon("src/Resources/Coin_" + intAnimationSequence[i] + ".png").getImage();
             // Resizes the image
             coinImages[i] = img.getScaledInstance(intSize, intSize, Image.SCALE_SMOOTH);
         }

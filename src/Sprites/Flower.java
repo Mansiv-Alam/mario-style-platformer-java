@@ -16,7 +16,7 @@ public class Flower {
         this.intY = y;
         displayTime = System.currentTimeMillis();
 
-        flowerImage = new ImageIcon("src/Fireflower.png").getImage();
+        flowerImage = new ImageIcon("src/Resources/Fireflower.png").getImage();
         // Resizes the image
         //flowerImage = img.getScaledInstance(50, 52, Image.SCALE_SMOOTH);
     }

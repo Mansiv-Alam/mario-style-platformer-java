@@ -15,11 +15,11 @@ public class Block extends Obstacle{
     public Block(int x, int y){
         super(x, y, 80,60);
 
-        Image img = new ImageIcon("src/PowerupBox.png").getImage();
+        Image img = new ImageIcon("src/Resources/PowerupBox.png").getImage();
         // Resizes the image
         blockImage = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
 
-        img = new ImageIcon("src/UsedBlock.png").getImage();
+        img = new ImageIcon("src/Resources/UsedBlock.png").getImage();
         // Resizes the image
         usedBlockImage = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
 

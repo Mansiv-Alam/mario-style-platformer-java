@@ -15,7 +15,7 @@ public class FlowerMonster extends Enemy{
         super(x,y, 64, 76);
         dblFlowerTimer = System.currentTimeMillis();
 
-        Image img = new ImageIcon("src/PiranhaPlant.png").getImage();
+        Image img = new ImageIcon("src/Resources/PiranhaPlant.png").getImage();
         // Resizes the image
         monsterImage = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
     }

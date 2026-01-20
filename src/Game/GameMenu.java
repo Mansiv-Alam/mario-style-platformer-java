@@ -2,11 +2,9 @@ package Game;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.desktop.SystemEventListener;
 import java.awt.event.*;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.Scanner;
 
 public class GameMenu extends JPanel{
@@ -16,15 +14,15 @@ public class GameMenu extends JPanel{
 
     public GameMenu(){
 
-        menuBackground[0] = new ImageIcon("src/MorioSky.png").getImage();
-        menuBackground[1] = new ImageIcon("src/MorioGround.png").getImage();
-        menuBackground[2] = new ImageIcon("src/MorioClouds.png").getImage();
+        menuBackground[0] = new ImageIcon("src/Resources/MorioSky.png").getImage();
+        menuBackground[1] = new ImageIcon("src/Resources/MorioGround.png").getImage();
+        menuBackground[2] = new ImageIcon("src/Resources/MorioClouds.png").getImage();
 
         setLayout(null); // We'll manually position buttons
 
         // Start button
-        btnStart = new JButton(new ImageIcon("src/Start.png"));
-        btnStart.setRolloverIcon(new ImageIcon("src/StartHover.png"));
+        btnStart = new JButton(new ImageIcon("src/Resources/Start.png"));
+        btnStart.setRolloverIcon(new ImageIcon("src/Resources/StartHover.png"));
         btnStart.setBounds(750, 300, 400, 98);
         btnStart.setBorderPainted(false);
         btnStart.setContentAreaFilled(false);
@@ -33,8 +31,8 @@ public class GameMenu extends JPanel{
         add(btnStart);
 
         // Exit button
-        btnExit = new JButton(new ImageIcon("src/Exit.png"));
-        btnExit.setRolloverIcon(new ImageIcon("src/ExitHover.png"));
+        btnExit = new JButton(new ImageIcon("src/Resources/Exit.png"));
+        btnExit.setRolloverIcon(new ImageIcon("src/Resources/ExitHover.png"));
         btnExit.setBounds(750, 600, 400, 98);
         btnExit.setBorderPainted(false);
         btnExit.setContentAreaFilled(false);
@@ -43,8 +41,8 @@ public class GameMenu extends JPanel{
         add(btnExit);
 
         // Load Game Button
-        btnLoadGame = new JButton(new ImageIcon("src/LoadGame.png"));
-        btnLoadGame.setRolloverIcon(new ImageIcon("src/LoadGameHover.png"));
+        btnLoadGame = new JButton(new ImageIcon("src/Resources/LoadGame.png"));
+        btnLoadGame.setRolloverIcon(new ImageIcon("src/Resources/LoadGameHover.png"));
         btnLoadGame.setBounds(750, 400, 400, 98);
         btnLoadGame.setBorderPainted(false);
         btnLoadGame.setContentAreaFilled(false);
@@ -53,8 +51,8 @@ public class GameMenu extends JPanel{
         add(btnLoadGame);
 
         // Credits Button
-        btnCredits = new JButton(new ImageIcon("src/Credits.png"));
-        btnCredits.setRolloverIcon(new ImageIcon("src/CreditsHover.png"));
+        btnCredits = new JButton(new ImageIcon("src/Resources/Credits.png"));
+        btnCredits.setRolloverIcon(new ImageIcon("src/Resources/CreditsHover.png"));
         btnCredits.setBounds(750, 500, 400, 98);
         btnCredits.setBorderPainted(false);
         btnCredits.setContentAreaFilled(false);
@@ -69,7 +67,7 @@ public class GameMenu extends JPanel{
         btnCredits.addActionListener(handler);
     }
 
-    private class ButtonHandler implements ActionListener { ;
+    private class ButtonHandler implements ActionListener {
         public void actionPerformed(ActionEvent e){
             String strCommand = e.getActionCommand();
 

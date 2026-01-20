@@ -29,7 +29,7 @@ public class Goomba extends Enemy{
         
         for (int i = 0; i < intAnimationSequence.length; i++) {
             // Gets the image from the source files
-            Image img = new ImageIcon("src/Goomba_" + intAnimationSequence[i] + ".png").getImage();
+            Image img = new ImageIcon("src/Resources/Goomba_" + intAnimationSequence[i] + ".png").getImage();
             // Resizes the image
             goombaImagesLeft[i] = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
         }
@@ -37,7 +37,7 @@ public class Goomba extends Enemy{
 
         for (int i = 0; i < intAnimationSequence.length; i++) {
             // Gets the image from the source files
-            Image img = new ImageIcon("src/Goomba_" + intAnimationSequence[i] + ".png").getImage();
+            Image img = new ImageIcon("src/Resources/Goomba_" + intAnimationSequence[i] + ".png").getImage();
             // Resizes the image
             goombaImagesRight[i] = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
         }

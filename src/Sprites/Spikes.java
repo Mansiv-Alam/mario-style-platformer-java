@@ -10,7 +10,7 @@ public class Spikes extends Obstacle{
     private final Image spikeImage;
     public Spikes(int x, int y){
         super(x, y, 50, 50);
-        Image img = new ImageIcon("src/MorioSpike.png").getImage();
+        Image img = new ImageIcon("src/Resources/MorioSpike.png").getImage();
         // Resizes the image
         spikeImage = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
     }

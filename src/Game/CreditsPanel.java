@@ -11,8 +11,8 @@ public class CreditsPanel extends JPanel {
 
     public CreditsPanel(){
 
-        menuBackground[0] = new ImageIcon("src/MorioSky.png").getImage();
-        menuBackground[1] = new ImageIcon("src/MorioGround.png").getImage();
+        menuBackground[0] = new ImageIcon("src/Resources/MorioSky.png").getImage();
+        menuBackground[1] = new ImageIcon("src/Resources/MorioGround.png").getImage();
 
         setLayout(null); // Manually positioned buttons
 
@@ -59,8 +59,8 @@ public class CreditsPanel extends JPanel {
         add(soundDesign);
 
         // Back to Home button
-        JButton btnBackToHome = new JButton(new ImageIcon("src/BackToMenu.png"));
-        btnBackToHome.setRolloverIcon(new ImageIcon("src/BackToMenuHover.png"));
+        JButton btnBackToHome = new JButton(new ImageIcon("src/Resources/BackToMenu.png"));
+        btnBackToHome.setRolloverIcon(new ImageIcon("src/Resources/BackToMenuHover.png"));
         btnBackToHome.setBounds(15, 15, 400, 98);
         btnBackToHome.setBorderPainted(false);
         btnBackToHome.setContentAreaFilled(false);
@@ -71,7 +71,7 @@ public class CreditsPanel extends JPanel {
         ButtonHandler handler = new ButtonHandler();
         btnBackToHome.addActionListener(handler);
     }
-    private class ButtonHandler implements ActionListener { ;
+    private class ButtonHandler implements ActionListener {
         public void actionPerformed(ActionEvent e){
             String strCommand = e.getActionCommand();
 

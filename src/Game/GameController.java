@@ -22,7 +22,7 @@ public class GameController extends JPanel {
     private boolean blnMovingRight, blnMovingLeft;
     private boolean blnGameOver = false;
     private final Image[] BgImages = new Image[4];
-    private Image GameOver;
+    private Image GameOver, Controls;
 
     public class MyKeyListener implements KeyListener
     {
@@ -115,11 +115,12 @@ public class GameController extends JPanel {
     }
     public void loadBGImages(){
         // Gets the image from the source files
-        BgImages[0] = new ImageIcon("src/MorioGround.png").getImage();
-        BgImages[1] = new ImageIcon("src/MorioSky.png").getImage();
-        BgImages[2] = new ImageIcon("src/MorioClouds.png").getImage();
-        BgImages[3] = new ImageIcon("src/Settings.png").getImage();
-        GameOver = new ImageIcon("src/GameOver.png").getImage();
+        BgImages[0] = new ImageIcon("src/Resources/MorioGround.png").getImage();
+        BgImages[1] = new ImageIcon("src/Resources/MorioSky.png").getImage();
+        BgImages[2] = new ImageIcon("src/Resources/MorioClouds.png").getImage();
+        BgImages[3] = new ImageIcon("src/Resources/Settings.png").getImage();
+        GameOver = new ImageIcon("src/Resources/GameOver.png").getImage();
+        Controls = new ImageIcon("src/Resources/Controls.png").getImage();
     }
 
     public void paint(Graphics g) {
@@ -129,9 +130,11 @@ public class GameController extends JPanel {
         g.drawImage(BgImages[2], 30, 200, 1748, 320, null);
         g.drawImage(BgImages[3], 1810, 15, null);
 
+        // GUI
         g.setColor(Color.WHITE);                 // White text
         g.setFont(new Font("Pt Sans", Font.PLAIN, 36)); // Font style and size
         g.drawString("Score: " + intScore, 20, 50);
+        g.drawString("Lives: " + player.getLives(), 20, 100);
         if (player.getPlayerState() == 2) {
             g.drawString("Firestate: Active", 240, 50);
         }
@@ -139,6 +142,9 @@ public class GameController extends JPanel {
             g.drawString("Firestate: Inactive", 240, 50);
         }
 
+        if (intLevel == 1){
+            g.drawImage(Controls, 1100, 50,null);
+        }
         if (blnGameOver && intLevel != 4){
             g.drawImage(GameOver, 600, 200, null);
             repaint();

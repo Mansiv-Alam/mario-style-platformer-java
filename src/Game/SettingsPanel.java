@@ -16,16 +16,16 @@ public class SettingsPanel extends JPanel {
     public SettingsPanel(GameController game){
         this.game = game;
 
-        menuBackground[0] = new ImageIcon("src/MorioSky.png").getImage();
-        menuBackground[1] = new ImageIcon("src/MorioGround.png").getImage();
-        menuBackground[2] = new ImageIcon("src/MorioClouds.png").getImage();
+        menuBackground[0] = new ImageIcon("src/Resources/MorioSky.png").getImage();
+        menuBackground[1] = new ImageIcon("src/Resources/MorioGround.png").getImage();
+        menuBackground[2] = new ImageIcon("src/Resources/MorioClouds.png").getImage();
 
 
         setLayout(null); // Manually positioned buttons
 
         // Save Game Button
-        btnSave = new JButton(new ImageIcon("src/SaveGame.png"));
-        btnSave.setRolloverIcon(new ImageIcon("src/SaveGameHover.png"));
+        btnSave = new JButton(new ImageIcon("src/Resources/SaveGame.png"));
+        btnSave.setRolloverIcon(new ImageIcon("src/Resources/SaveGameHover.png"));
         btnSave.setBounds(750, 300, 400, 98);
         btnSave.setBorderPainted(false);
         btnSave.setContentAreaFilled(false);
@@ -34,8 +34,8 @@ public class SettingsPanel extends JPanel {
         add(btnSave);
 
         // Back to Game button
-        JButton btnBackToGame = new JButton(new ImageIcon("src/BackToGame.png"));
-        btnBackToGame.setRolloverIcon(new ImageIcon("src/BackToGameHover.png"));
+        JButton btnBackToGame = new JButton(new ImageIcon("src/Resources/BackToGame.png"));
+        btnBackToGame.setRolloverIcon(new ImageIcon("src/Resources/BackToGameHover.png"));
         btnBackToGame.setBounds(750, 450, 400, 98);
         btnBackToGame.setBorderPainted(false);
         btnBackToGame.setContentAreaFilled(false);
@@ -44,8 +44,8 @@ public class SettingsPanel extends JPanel {
         add(btnBackToGame);
 
         // Back to Home button
-        JButton btnBackToHome = new JButton(new ImageIcon("src/BackToMenu.png"));
-        btnBackToHome.setRolloverIcon(new ImageIcon("src/BackToMenuHover.png"));
+        JButton btnBackToHome = new JButton(new ImageIcon("src/Resources/BackToMenu.png"));
+        btnBackToHome.setRolloverIcon(new ImageIcon("src/Resources/BackToMenuHover.png"));
         btnBackToHome.setBounds(750, 600, 400, 98);
         btnBackToHome.setBorderPainted(false);
         btnBackToHome.setContentAreaFilled(false);

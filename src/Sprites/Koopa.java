@@ -34,7 +34,7 @@ public class Koopa extends Enemy{
 
         for (int i = 0; i < intAnimationSequence.length; i++){
             // Gets the image from the source files
-            Image img = new ImageIcon("src/KoopaShell_" + intAnimationSequence[i] + ".png").getImage();
+            Image img = new ImageIcon("src/Resources/KoopaShell_" + intAnimationSequence[i] + ".png").getImage();
             // Resizes the image
             shellImages[i] = img.getScaledInstance(68, 60, Image.SCALE_SMOOTH);
         }
@@ -42,14 +42,14 @@ public class Koopa extends Enemy{
         intAnimationSequence = new int[]{1, 2, 1, 3, 1};
         // Left walking animations
         for (int i = 0; i < intAnimationSequence.length; i++){
-            Image img = new ImageIcon("src/Koopa_" + intAnimationSequence[i] + ".png").getImage();
+            Image img = new ImageIcon("src/Resources/Koopa_" + intAnimationSequence[i] + ".png").getImage();
             KoopaImagesLeft[i] = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
         }
 
         intAnimationSequence = new int[]{4, 5, 4, 6, 4};
         // Right walking animations
         for (int i = 0; i < intAnimationSequence.length; i++){
-            Image img = new ImageIcon("src/Koopa_" + intAnimationSequence[i] + ".png").getImage();
+            Image img = new ImageIcon("src/Resources/Koopa_" + intAnimationSequence[i] + ".png").getImage();
             KoopaImagesRight[i] = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
         }
 

@@ -1,7 +1,5 @@
 package Sprites;
 
-import Game.GameController;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -19,7 +17,7 @@ public class Fireball {
         this.dblX = dblStartX;
         this.dblY = dblStartY;
         this.velX = 2 * intDirection;
-        fireballImage = new ImageIcon("src/Fireball.png").getImage();
+        fireballImage = new ImageIcon("src/Resources/Fireball.png").getImage();
     }
     // Accessor Methods
     public double getY() {

@@ -12,7 +12,7 @@ public class Platform extends Obstacle{
     public Platform(int x, int y){
         super(x, y, 200, 67);
 
-        Image img = new ImageIcon("src/Platform.png").getImage();
+        Image img = new ImageIcon("src/Resources/Platform.png").getImage();
         // Resizes the image
         platformImage = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
     }

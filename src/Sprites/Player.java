@@ -39,24 +39,24 @@ public class Player {
     }
     public void loadImages(){
         // Gets the image from the source files
-        Image img = new ImageIcon("src/Morio_1.png").getImage();
+        Image img = new ImageIcon("src/Resources/Morio_1.png").getImage();
         // Resizes the image
         playerImagesRight[0] = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
 
-        img = new ImageIcon("src/Morio_2.png").getImage();
+        img = new ImageIcon("src/Resources/Morio_2.png").getImage();
         playerImagesLeft[0] = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
 
         for (int i = 0; i < 2; i++) {
-            img = new ImageIcon("src/Morio_" + (i + 3) + ".png").getImage();
+            img = new ImageIcon("src/Resources/Morio_" + (i + 3) + ".png").getImage();
             playerImages[i] = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
 
         }
         // Loops through the running frames to load them into the arrays
         for (int i = 0; i < 6; i++) {
-            img = new ImageIcon("src/Morio_" + (i + 5 ) + ".png").getImage();
+            img = new ImageIcon("src/Resources/Morio_" + (i + 5 ) + ".png").getImage();
             playerImagesRight[i + 1] = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
 
-            img = new ImageIcon("src/Morio_" + (i + 11 ) + ".png").getImage();
+            img = new ImageIcon("src/Resources/Morio_" + (i + 11 ) + ".png").getImage();
             playerImagesLeft[i + 1] = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
 
         }
@@ -94,9 +94,6 @@ public class Player {
     }
     public void setPlayerState(int newPlayerState){
         this.intPlayerState = newPlayerState;
-    }
-    public void setLives(int intLives){
-        this.intLives = intLives;
     }
     public double getVelocityX(){
         return this.dblVelocityX;
