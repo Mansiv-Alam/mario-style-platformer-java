@@ -25,7 +25,7 @@ public class SettingsPanel extends JPanel {
 
         // Save Game Button
         btnSave = new JButton(new ImageIcon("src/Resources/SaveGame.png"));
-        btnSave.setRolloverIcon(new ImageIcon("src/Resources/SaveGameHover.png"));
+        btnSave.setRolloverIcon(new ImageIcon("src/Resources/SaveGameHover.png")); // Hover png
         btnSave.setBounds(750, 300, 400, 98);
         btnSave.setBorderPainted(false);
         btnSave.setContentAreaFilled(false);
@@ -35,7 +35,7 @@ public class SettingsPanel extends JPanel {
 
         // Back to Game button
         JButton btnBackToGame = new JButton(new ImageIcon("src/Resources/BackToGame.png"));
-        btnBackToGame.setRolloverIcon(new ImageIcon("src/Resources/BackToGameHover.png"));
+        btnBackToGame.setRolloverIcon(new ImageIcon("src/Resources/BackToGameHover.png")); // Hover png
         btnBackToGame.setBounds(750, 450, 400, 98);
         btnBackToGame.setBorderPainted(false);
         btnBackToGame.setContentAreaFilled(false);
@@ -45,7 +45,7 @@ public class SettingsPanel extends JPanel {
 
         // Back to Home button
         JButton btnBackToHome = new JButton(new ImageIcon("src/Resources/BackToMenu.png"));
-        btnBackToHome.setRolloverIcon(new ImageIcon("src/Resources/BackToMenuHover.png"));
+        btnBackToHome.setRolloverIcon(new ImageIcon("src/Resources/BackToMenuHover.png")); // Hover png
         btnBackToHome.setBounds(750, 600, 400, 98);
         btnBackToHome.setBorderPainted(false);
         btnBackToHome.setContentAreaFilled(false);
@@ -53,20 +53,21 @@ public class SettingsPanel extends JPanel {
         btnBackToHome.setActionCommand("BackToHome");
         add(btnBackToHome);
 
+        // Add interactiveness to the buttons
         ButtonHandler handler = new ButtonHandler(this.game);
         btnSave.addActionListener(handler);
         btnBackToHome.addActionListener(handler);
         btnBackToGame.addActionListener(handler);
     }
     private class ButtonHandler implements ActionListener {
-        private GameController game;
+        private GameController game; // stores the game in case user wants to return to the game
         public ButtonHandler (GameController game){
             this.game = game;
         }
         @Override
         public void actionPerformed(ActionEvent e) {
             String strCommand = e.getActionCommand();
-
+            // Saves the game to the save file
             if(strCommand.equals("Save")){
                 try (PrintWriter fileOut = new PrintWriter(new FileWriter("SaveData.txt"))) {
                     // Example: write player position and score
@@ -78,6 +79,7 @@ public class SettingsPanel extends JPanel {
                     JOptionPane.showMessageDialog(SettingsPanel.this, "Failed to save game.");
                 }
             }
+            // Makes the user go back to the game
             else if (strCommand.equals("BackToGame")){
                 // Get the current window that holds this menu
                 JFrame window = (JFrame) SwingUtilities.getWindowAncestor(SettingsPanel.this);
@@ -93,6 +95,7 @@ public class SettingsPanel extends JPanel {
                 window.revalidate();
                 window.repaint();
             }
+            // Makes the user go back to the home screen
             else if(strCommand.equals("BackToHome")){
                 // Get the current window that holds this menu
                 JFrame window = (JFrame) SwingUtilities.getWindowAncestor(SettingsPanel.this);
@@ -113,6 +116,7 @@ public class SettingsPanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        // Draw Background
         g.drawImage(menuBackground[0], 0, 0, getWidth(), getHeight(), this);
         g.drawImage(menuBackground[1], 0, 863, 1920, 217, this);
         g.drawImage(menuBackground[2], 30, 200, 1748, 320, this);

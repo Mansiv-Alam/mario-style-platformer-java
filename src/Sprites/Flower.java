@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Flower {
-
+    // Variables
     private int intX;
     private int intY;
     private boolean blnActive = false;
@@ -15,7 +15,6 @@ public class Flower {
         this.intX = x;
         this.intY = y;
         displayTime = System.currentTimeMillis();
-
         flowerImage = new ImageIcon("src/Resources/Fireflower.png").getImage();
     }
 
@@ -29,6 +28,7 @@ public class Flower {
 
     public void draw(Graphics g){
         if (blnActive){
+            // Height and width of the png
             g.drawImage(flowerImage, intX, intY, 50, 52, null);
         }
         updateAnimation();

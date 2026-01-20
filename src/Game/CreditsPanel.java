@@ -10,7 +10,7 @@ public class CreditsPanel extends JPanel {
     private Image[] menuBackground = new Image[2];
 
     public CreditsPanel(){
-
+        // Background images
         menuBackground[0] = new ImageIcon("src/Resources/MorioSky.png").getImage();
         menuBackground[1] = new ImageIcon("src/Resources/MorioGround.png").getImage();
 
@@ -96,6 +96,7 @@ public class CreditsPanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        // Draws background
         g.drawImage(menuBackground[0], 0, 0, getWidth(), getHeight(), this);
         g.drawImage(menuBackground[1], 0, 863, 1920, 217, this);
     }

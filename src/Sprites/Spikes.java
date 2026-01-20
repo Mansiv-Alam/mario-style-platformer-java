@@ -6,10 +6,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Spikes extends Obstacle{
-
+    // Variables
     private final Image spikeImage;
+
+    // Constructor
     public Spikes(int x, int y){
-        super(x, y, 50, 50);
+        super(x, y, 50, 50); // Height and width based of the png dimensions
         Image img = new ImageIcon("src/Resources/MorioSpike.png").getImage();
         // Resizes the image
         spikeImage = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);

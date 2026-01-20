@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Koopa extends Enemy{
-
+    // Variables
     private double dblStartX;
     private int intRange = 75;
     private int intDirection = 1;
@@ -17,7 +17,6 @@ public class Koopa extends Enemy{
     Image[] shellImages = new Image[4];
     Image[] KoopaImagesLeft = new Image[5];
     Image[] KoopaImagesRight = new Image[5];
-
     Image imgDisplayed;
     private int intFrame = 0;
     private long lastFrameTime;
@@ -75,6 +74,7 @@ public class Koopa extends Enemy{
         if (!blnInShell){
             player.takeDamage();
         }
+        // Delay between stomps so the collisions don't trigger the shell immediately
         else if (System.currentTimeMillis() - stompTimer > 500){
             blnIsMoving = true;
             if (player.getDirection() > 0){
@@ -101,6 +101,7 @@ public class Koopa extends Enemy{
     }
     @Override
     public void onStomp(GameController gmc, int index, Player player){
+        // puts the koopa into the shell state on first stomp
         if (!blnInShell) {
             blnInShell = true;   // hide in shell
             blnIsMoving = false; // initially stationary
@@ -111,7 +112,7 @@ public class Koopa extends Enemy{
             player.bounce();
 
         } else {
-            // shell kicked
+            // kicks the shell on second stomp
             blnIsMoving = true;
             dblShellDirection = 2 * (int)(Math.random() * 2) -1;
         }
@@ -128,7 +129,7 @@ public class Koopa extends Enemy{
         double dblFraction = dblDistanceFromLeftEnd / (intRange * 2); // Calculates the distance moved in percentage
         dblFraction = Math.min(Math.max(dblFraction, 0), 1);
 
-        // Pick frame from left or right depending on direction
+        // Pick frame from left or right depending on the direction it is spinning
         if (intDirection == 1) {
             int intFrameIndex = (int)(dblFraction * KoopaImagesRight.length); // Transitions the distance moved to the animation frame
             intFrameIndex = Math.min(intFrameIndex, KoopaImagesRight.length - 1);
@@ -142,6 +143,7 @@ public class Koopa extends Enemy{
 
     public void updateShellAnimations(){
         long currentTime = System.currentTimeMillis();
+        // Make the shell animate as if its spinning
         if (currentTime - lastFrameTime >= intFrameDelay) {
             intFrame = (intFrame + 1) % shellImages.length;
             imgDisplayed = shellImages[intFrame];

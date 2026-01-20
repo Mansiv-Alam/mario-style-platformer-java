@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Fireball {
-
+    // Variables
     private double dblX, dblY, dblPrevY;
     private final double GRAVITY = 0.1;
     private final double BOUNCE = -4;

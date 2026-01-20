@@ -5,6 +5,7 @@ import Game.GameController;
 import java.awt.*;
 
 public abstract class Obstacle {
+    // Variables
     protected int intX;
     protected int intY;
     protected int intWidth;

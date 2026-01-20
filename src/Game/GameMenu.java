@@ -8,21 +8,21 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class GameMenu extends JPanel{
-
+    // Variables
     private Image[] menuBackground = new Image[4];
     private JButton btnStart, btnExit, btnLoadGame, btnCredits;
 
     public GameMenu(){
-
+        // Background
         menuBackground[0] = new ImageIcon("src/Resources/MorioSky.png").getImage();
         menuBackground[1] = new ImageIcon("src/Resources/MorioGround.png").getImage();
         menuBackground[2] = new ImageIcon("src/Resources/MorioClouds.png").getImage();
 
-        setLayout(null); // We'll manually position buttons
+        setLayout(null); // manually positioned buttons
 
         // Start button
         btnStart = new JButton(new ImageIcon("src/Resources/Start.png"));
-        btnStart.setRolloverIcon(new ImageIcon("src/Resources/StartHover.png"));
+        btnStart.setRolloverIcon(new ImageIcon("src/Resources/StartHover.png")); // Hover png
         btnStart.setBounds(750, 300, 400, 98);
         btnStart.setBorderPainted(false);
         btnStart.setContentAreaFilled(false);
@@ -88,7 +88,7 @@ public class GameMenu extends JPanel{
                 window.repaint();
             }
             else if (strCommand.equals("Exit")){
-                System.exit(0);
+                System.exit(0); // Exit Game
             }
             else if (strCommand.equals("LoadGame")){
                 try {
@@ -122,7 +122,7 @@ public class GameMenu extends JPanel{
                 // Remove the menu panel from the window
                 window.getContentPane().removeAll();
 
-                // Add the game panel to the window
+                // Add the credits panel to the window
                 CreditsPanel credits = new CreditsPanel();
                 window.getContentPane().add(credits);
 
@@ -136,6 +136,7 @@ public class GameMenu extends JPanel{
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        // Draws background
         g.drawImage(menuBackground[0], 0, 0, getWidth(), getHeight(), this);
         g.drawImage(menuBackground[1], 0, 863, 1920, 217, this);
         g.drawImage(menuBackground[2], 30, 200, 1748, 320, this);

@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Goomba extends Enemy{
-
+    // Variables
     private double dblStartX;
     private int intRange = 100;
     private int intDirection = -1;
@@ -25,16 +25,16 @@ public class Goomba extends Enemy{
         loadImages();
     }
     public void loadImages(){
+        // Loads the animation sequence that is used in the game for walking left
         int[] intAnimationSequence = {1, 3, 4, 3, 5, 3, 2,1};
-        
         for (int i = 0; i < intAnimationSequence.length; i++) {
             // Gets the image from the source files
             Image img = new ImageIcon("src/Resources/Goomba_" + intAnimationSequence[i] + ".png").getImage();
             // Resizes the image
             goombaImagesLeft[i] = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
         }
+        // Loads the animation sequence that is used in the game for walking right
         intAnimationSequence = new int[]{6, 7, 8, 7, 9, 7, 1};
-
         for (int i = 0; i < intAnimationSequence.length; i++) {
             // Gets the image from the source files
             Image img = new ImageIcon("src/Resources/Goomba_" + intAnimationSequence[i] + ".png").getImage();
@@ -66,7 +66,7 @@ public class Goomba extends Enemy{
             // Do not move while turning
             return;
         }
-
+        // Move left or right
         dblX += dblSpeed * intDirection;
 
         // Turns around at the end of the range
@@ -98,7 +98,7 @@ public class Goomba extends Enemy{
         if (blnTurning) {
             return;
         }
-
+        // Bases the animation of the distance the goomba has walked
         double dblDistanceFromLeftEnd = dblX - (dblStartX - intRange);
         double dblFraction = dblDistanceFromLeftEnd / (intRange * 2); // Calculates the distance moved in percentage
         dblFraction = Math.min(Math.max(dblFraction, 0), 1);

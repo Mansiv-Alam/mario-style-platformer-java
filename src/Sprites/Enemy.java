@@ -5,6 +5,7 @@ import Game.GameController;
 import java.awt.*;
 
 public abstract class Enemy {
+    // Variables
     protected double dblX;
     protected double dblY;
     protected int intWidth;

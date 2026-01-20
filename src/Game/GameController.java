@@ -11,6 +11,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 public class GameController extends JPanel {
+    // Variables
     private int intScore, intCurrentScore;
     private int intLevel = 1;
     private Player player;
@@ -24,6 +25,7 @@ public class GameController extends JPanel {
     private final Image[] BgImages = new Image[4];
     private Image GameOver, Controls;
 
+    // Key Input class
     public class MyKeyListener implements KeyListener
     {
         @Override
@@ -45,6 +47,7 @@ public class GameController extends JPanel {
             if (e.getKeyCode() == 'D') {blnMovingRight = false;}
         }
     }
+    // Mouse Input class
     public class MyMouseListener implements MouseListener {
 
         @Override
@@ -204,6 +207,7 @@ public class GameController extends JPanel {
         }
     }
     public void updateFireballs(){
+        // Fireball interactions with obstacles and enemies
         for (int i = 0; i < fireballs.size(); i++){
             Fireball f = fireballs.get(i);
 

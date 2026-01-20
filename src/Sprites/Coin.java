@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Coin {
+    // Variables
     private int intX;
     private int intY;
     private int intSize = 50;

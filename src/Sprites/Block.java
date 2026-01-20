@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Block extends Obstacle{
-
+    // Variables
     private int intPowerUp; // 1 for coin, 2 for power up
     private boolean blnBlockUsed = false;
     private Image blockImage;

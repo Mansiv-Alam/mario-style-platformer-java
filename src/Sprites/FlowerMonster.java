@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class FlowerMonster extends Enemy{
-
+    // Variables
     private double dblFlowerTimer;
     private boolean blnActive;
     private Image monsterImage;
@@ -34,7 +34,7 @@ public class FlowerMonster extends Enemy{
     }
     @Override
     public void move(){
-        // 5 Second delay
+        // 1-Second delay between its active and non-active state
         if (!blnActive && System.currentTimeMillis() - dblFlowerTimer >= 1000){
             blnActive = true;
             dblFlowerTimer = System.currentTimeMillis();

@@ -7,6 +7,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Player {
+    // Variables
     private double dblPositionX;
     private double dblPositionY;
     // For Collisions
@@ -45,7 +46,7 @@ public class Player {
 
         img = new ImageIcon("src/Resources/Morio_2.png").getImage();
         playerImagesLeft[0] = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
-
+        // Jumping Animations
         for (int i = 0; i < 2; i++) {
             img = new ImageIcon("src/Resources/Morio_" + (i + 3) + ".png").getImage();
             playerImages[i] = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
@@ -53,6 +54,7 @@ public class Player {
         }
         // Loops through the running frames to load them into the arrays
         for (int i = 0; i < 6; i++) {
+            // Running Animations
             img = new ImageIcon("src/Resources/Morio_" + (i + 5 ) + ".png").getImage();
             playerImagesRight[i + 1] = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
 
@@ -140,7 +142,7 @@ public class Player {
         if(blnInvincible) return;
 
         blnInvincible = true;
-        invincibleTime = System.currentTimeMillis();
+        invincibleTime = System.currentTimeMillis(); // invincibility timing
         // knock back
         dblPositionX -= 50; // push back horizontally
         dblPositionY -= 10;
@@ -156,7 +158,7 @@ public class Player {
             lastFireTime = currentTime; // reset cooldown
         }
     }
-
+    // Physics
     public void stopHorizontalVel(){
         this.dblVelocityX = 0;
     }
@@ -164,8 +166,8 @@ public class Player {
         this.dblVelocityY = 0;
     }
     public void updatePlayer(boolean blnIsMovingRight, boolean blnIsMovingLeft, GameController gmc){
-
         updatePosition(blnIsMovingRight, blnIsMovingLeft, gmc);
+
         if (blnInvincible) {
             long elapsedTime = System.currentTimeMillis() - invincibleTime;
             if (elapsedTime >= 1000){
@@ -175,7 +177,7 @@ public class Player {
     }
 
     public void updatePosition(boolean blnIsMovingRight, boolean blnIsMovingLeft, GameController gmc){
-        // Saves previous position
+        // Saves previous position for collisions
         dblPrevX = this.dblPositionX;
         dblPrevY = this.dblPositionY;
 
@@ -193,7 +195,6 @@ public class Player {
         }
 
         applyGravity();
-
         dblPositionX += dblVelocityX;
         dblPositionY += dblVelocityY;
 
@@ -224,6 +225,7 @@ public class Player {
         blnIsFalling = false;
         blnIsJumping = false;
     }
+    // returns rectangle for collisions
     public Rectangle getPlayerBounds(){
         return new Rectangle((int)dblPositionX, (int)dblPositionY, intWidth, intHeight);
     }
@@ -256,7 +258,7 @@ public class Player {
         // Running animations
         intFrameCounter++;
         if (intFrameCounter >= intFrameDelay) {
-            intAnimationFrame = (intAnimationFrame + 1) % 6;
+            intAnimationFrame = (intAnimationFrame + 1) % 6; // 6 running frames
             intFrameCounter = 0;
         }
         if (intDirection == 1) {
