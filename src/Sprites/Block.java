@@ -12,27 +12,28 @@ public class Block extends Obstacle{
     private Image blockImage;
     private final Image usedBlockImage;
 
+    // Constructor
     public Block(int x, int y){
         super(x, y, 80,60);
 
+        // Images for the powerup Block
         Image img = new ImageIcon("src/Resources/PowerupBox.png").getImage();
         // Resizes the image
         blockImage = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
-
         img = new ImageIcon("src/Resources/UsedBlock.png").getImage();
-        // Resizes the image
         usedBlockImage = img.getScaledInstance(intWidth, intHeight, Image.SCALE_SMOOTH);
 
         spawnPowerUp();
     }
     public void draw(Graphics g){
+        // Displays the image
         g.drawImage(blockImage, intX, intY, null);
     }
     public void collidesWith(GameController gmc, Player player){
         // Adds powerups or coins to the player or coin list in the game controller by passing game controller as a parameter
         if (!blnBlockUsed){
             blnBlockUsed = true; // Make sure only one coin or power up is made per block
-            blockImage = usedBlockImage;
+            blockImage = usedBlockImage; // Makes the block shown the used block image
             if (intPowerUp == 1){
                 gmc.addCoin(new Coin(intX + (intWidth / 2) - 25, intY - 50, true));
                 gmc.increaseScore();
@@ -45,7 +46,7 @@ public class Block extends Obstacle{
     }
     public void spawnPowerUp(){
         double dblRandom = Math.random();
-        // 70% chance of a coin
+        // 70% chance of a coin and 30% change of a flower
         if (dblRandom < 0.7){
             intPowerUp = 1;
         }

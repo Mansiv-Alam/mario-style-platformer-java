@@ -10,6 +10,7 @@ public abstract class Enemy {
     protected int intWidth;
     protected int intHeight;
 
+    // Constructor
     public Enemy(int x, int y, int width,int height){
         this.dblX = x;
         this.dblY = y;
@@ -33,6 +34,7 @@ public abstract class Enemy {
         return intHeight;
     }
 
+    // Abstract methods
     public abstract void draw(Graphics g);
     public abstract void collidesWith(GameController gmc, Player player);
     public abstract void move();

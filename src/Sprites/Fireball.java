@@ -13,10 +13,11 @@ public class Fireball {
     private boolean blnActive = true;
     private Image fireballImage;
 
+    // Constructor
     public Fireball(double dblStartX, double dblStartY, int intDirection){
         this.dblX = dblStartX;
         this.dblY = dblStartY;
-        this.velX = 2 * intDirection;
+        this.velX = 2 * intDirection; // Bases velocity off direction
         fireballImage = new ImageIcon("src/Resources/Fireball.png").getImage();
     }
     // Accessor Methods
@@ -47,7 +48,7 @@ public class Fireball {
 
     public void update(){
         dblPrevY = dblY;
-
+        // Change the position of the fireball
         velY += GRAVITY;
         dblX += velX;
         dblY += velY;
@@ -57,7 +58,7 @@ public class Fireball {
             dblY = 863 - intSize;
             velY = BOUNCE;
             incrementBounceCount();
-
+            // Destroy the fireball if it has bounced for 3 times
             if (intBounceCount >= 3) {
                 destroyFireball();
             }
@@ -69,13 +70,13 @@ public class Fireball {
     public void draw(Graphics g) {
         g.drawImage(fireballImage, (int)dblX, (int)dblY,null);
     }
+    // Get the rectangle of the fireball for easy collision checks
     public Rectangle getBounds() {
         return new Rectangle((int)dblX, (int)dblY, intSize, intSize);
     }
     public void destroyFireball() {
         blnActive = false;
     }
-
     public int getBounce() {
         return this.intBounceCount;
     }
