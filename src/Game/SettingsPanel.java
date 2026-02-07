@@ -110,7 +110,7 @@ public class SettingsPanel extends JPanel {
                 // Refresh the window to show the new content
                 window.revalidate();
                 window.repaint();
-            }
+            } 
         }
     }
     @Override

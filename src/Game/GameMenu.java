@@ -79,7 +79,7 @@ public class GameMenu extends JPanel{
                 window.getContentPane().removeAll();
 
                 // Add the game panel to the window
-                GameController game = new GameController();
+                GameController game = new GameController(1,0);
                 window.getContentPane().add(game);
                 game.requestFocusInWindow(); // make the panel focus so the keyboard inputs work
 
@@ -95,6 +95,7 @@ public class GameMenu extends JPanel{
                     Scanner fileIn = new Scanner(new File("SaveData.txt"));
                     int savedScore = fileIn.nextInt();
                     int savedLevel = fileIn.nextInt();
+                    fileIn.close();
 
                     // Get the current window that holds this menu
                     JFrame window = (JFrame) SwingUtilities.getWindowAncestor(GameMenu.this);
@@ -103,10 +104,9 @@ public class GameMenu extends JPanel{
                     window.getContentPane().removeAll();
 
                     // Add the game panel to the window
-                    GameController game = new GameController();
+                    GameController game = new GameController(savedLevel, savedScore);
                     window.getContentPane().add(game);
                     game.requestFocusInWindow(); // make the panel focus so the keyboard inputs work
-                    game.saveData(savedScore, savedLevel);
 
                     // Refresh the window to show the new content
                     window.revalidate();

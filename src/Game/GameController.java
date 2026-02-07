@@ -105,13 +105,15 @@ public class GameController extends JPanel {
         public void mouseExited(MouseEvent e) {}
     }
 
-    GameController(){
+    GameController(int savedLevel, int savedScore){
         player = new Player(25, 822);
         MyKeyListener listener = new MyKeyListener();
         MyMouseListener mouseListener = new MyMouseListener();
         addMouseListener(mouseListener);
         addKeyListener(listener);
         setFocusable(true);
+        this.intLevel = savedLevel;
+        this.intScore = savedScore;
         loadLevel();
 
         loadBGImages();
@@ -341,10 +343,6 @@ public class GameController extends JPanel {
     }
     public void removeEnemy(int index){
         enemies.remove(index);
-    }
-    public void saveData(int intSavedScore,int intSavedLevel){
-        this.intScore = intSavedScore;
-        this.intLevel = intSavedLevel;
     }
     public void resetLevel(){
         intCurrentScore = 0;
