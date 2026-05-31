@@ -1,1 +1,1 @@
-A Project to make Mario in Java in JDK 21.0.4 
+A 2D Mario-style platformer game developed in Java using JDK 21.0, featuring basic gameplay mechanics such as movement, jumping, and collision detection.
